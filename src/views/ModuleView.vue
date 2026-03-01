@@ -60,7 +60,7 @@ function vimeoEmbed(vimeoId) {
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-4xl mx-auto px-4 pt-28 pb-16">
+    <main class="max-w-4xl mx-auto px-4 pt-6 pb-16">
 
       <!-- Back -->
       <button @click="router.back()" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-8 group">

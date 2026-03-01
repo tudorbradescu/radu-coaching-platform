@@ -57,7 +57,7 @@ import { computed } from 'vue'
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-5xl mx-auto px-4 pt-28 pb-16">
+    <main class="max-w-5xl mx-auto px-4 pt-6 pb-16">
 
       <!-- Header -->
       <div class="mb-10">

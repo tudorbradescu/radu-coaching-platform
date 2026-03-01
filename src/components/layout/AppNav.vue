@@ -13,6 +13,8 @@ async function logout() {
 </script>
 
 <template>
+  <!-- Spacer care ține locul navului fix în document flow -->
+  <div class="h-16"></div>
   <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5">
     <div class="max-w-5xl mx-auto px-4 pr-4 h-16 flex items-center justify-between">
       <!-- Logo -->
