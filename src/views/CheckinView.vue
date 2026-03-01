@@ -55,7 +55,7 @@ async function submit() {
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-2xl mx-auto px-4 pt-24 pb-16">
+    <main class="max-w-2xl mx-auto px-4 pt-28 pb-16">
 
       <button @click="router.back()" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-8 group">
         <ArrowLeft :size="16" class="group-hover:-translate-x-1 transition-transform" /> Înapoi

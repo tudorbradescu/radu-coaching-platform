@@ -42,7 +42,7 @@ function formatDate(d) {
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-5xl mx-auto px-4 pt-24 pb-16">
+    <main class="max-w-5xl mx-auto px-4 pt-28 pb-16">
 
       <div class="mb-10">
         <p class="text-xs font-semibold uppercase tracking-[0.3em] text-red-500 mb-2">Panou de control</p>
