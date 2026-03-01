@@ -31,7 +31,7 @@ onMounted(async () => {
 
 async function loadClients() {
   const [cl, md] = await Promise.all([
-    supabase.from('profiles').select('*').eq('role', 'client').order('full_name'),
+    supabase.rpc('get_clients'),
     supabase.from('modules').select('*').order('order_index')
   ])
   clients.value = cl.data || []
