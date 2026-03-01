@@ -7,8 +7,11 @@ export const useAuthStore = defineStore('auth', () => {
   const profile = ref(null)
   const loading = ref(true)
 
-  const isAdmin = computed(() => profile.value?.role === 'admin')
-  const isClient = computed(() => profile.value?.role === 'client')
+  const isAdmin = computed(() =>
+    profile.value?.role === 'admin' ||
+    user.value?.app_metadata?.role === 'admin'
+  )
+  const isClient = computed(() => !isAdmin.value)
 
   async function init() {
     loading.value = true
@@ -32,12 +35,25 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function fetchProfile() {
     if (!user.value) return
+
+    // Fallback from JWT metadata (no DB needed)
+    const meta = user.value.user_metadata || {}
+    const appMeta = user.value.app_metadata || {}
+    const jwtProfile = {
+      id: user.value.id,
+      email: user.value.email,
+      full_name: meta.full_name || user.value.email,
+      role: appMeta.role || 'client'
+    }
+
+    // Try to load from DB (may fail silently due to RLS)
     const { data } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', user.value.id)
-      .single()
-    profile.value = data
+      .maybeSingle()
+
+    profile.value = data || jwtProfile
   }
 
   async function login(email, password) {
