@@ -52,7 +52,10 @@ function toggleVideo(id) {
 }
 
 function vimeoEmbed(vimeoId) {
-  return `https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`
+  // Supports both public IDs ("123456") and unlisted/private ("123456/hashtoken")
+  const [id, hash] = vimeoId.toString().split('/')
+  const hashParam = hash ? `&h=${hash}` : ''
+  return `https://player.vimeo.com/video/${id}?badge=0&autopause=0&player_id=0&app_id=58479${hashParam}`
 }
 </script>
 

@@ -182,7 +182,7 @@ async function deleteVideo(moduleId, videoId) {
               <p class="text-xs text-gray-500 font-semibold uppercase tracking-widest">+ Videoclip nou</p>
               <input v-model="newVideo[mod.id].title" type="text" placeholder="Titlu videoclip"
                 class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
-              <input v-model="newVideo[mod.id].vimeo_id" type="text" placeholder="Vimeo ID (ex: 123456789)"
+              <input v-model="newVideo[mod.id].vimeo_id" type="text" placeholder="Vimeo ID (ex: 123456789 sau 123456789/hashPrivat)"
                 class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
               <input v-model="newVideo[mod.id].description" type="text" placeholder="Descriere (opțional)"
                 class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
