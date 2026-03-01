@@ -21,10 +21,7 @@ const scoreColors = {
 const scoreLabels = { 1: 'Slab', 2: 'Acceptabil', 3: 'OK', 4: 'Bine', 5: 'Excelent' }
 
 onMounted(async () => {
-  const { data } = await supabase
-    .from('checkins')
-    .select('*, client:profiles(full_name, email)')
-    .order('created_at', { ascending: false })
+  const { data } = await supabase.rpc('get_all_checkins')
   checkins.value = data || []
   loading.value = false
 })
@@ -33,7 +30,7 @@ const clients = computed(() => {
   const map = {}
   checkins.value.forEach(c => {
     const id = c.client_id
-    if (!map[id]) map[id] = c.client?.full_name || c.client?.email || 'Client necunoscut'
+    if (!map[id]) map[id] = c.client_name || c.client_email || 'Client necunoscut'
   })
   return map
 })
@@ -125,7 +122,7 @@ function toggleExpand(id) {
             <!-- Info -->
             <div class="flex-1 min-w-0">
               <div class="flex items-center gap-2 flex-wrap">
-                <span class="text-sm font-semibold text-white">{{ ci.client?.full_name || 'Client' }}</span>
+                <span class="text-sm font-semibold text-white">{{ ci.client_name || 'Client' }}</span>
                 <span v-if="ci.weight" class="text-xs text-gray-500">· {{ ci.weight }} kg</span>
               </div>
               <div class="flex items-center gap-3 mt-1 flex-wrap">

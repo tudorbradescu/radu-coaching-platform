@@ -14,22 +14,19 @@ const labels = { 1: 'Slab', 2: 'Acceptabil', 3: 'OK', 4: 'Bine', 5: 'Excelent' }
 const colors = { 1: '#ef4444', 2: '#f97316', 3: '#eab308', 4: '#84cc16', 5: '#22c55e' }
 
 onMounted(async () => {
-  const [clients, modules, checkins, recent] = await Promise.all([
-    supabase.from('profiles').select('id', { count: 'exact' }).eq('role', 'client'),
-    supabase.from('modules').select('id', { count: 'exact' }),
-    supabase.from('checkins').select('id', { count: 'exact' }),
-    supabase.from('checkins')
-      .select('*, client:profiles(full_name)')
-      .order('created_at', { ascending: false })
-      .limit(5)
+  const [statsRes, recentRes] = await Promise.all([
+    supabase.rpc('get_admin_stats'),
+    supabase.rpc('get_recent_checkins', { lim: 5 })
   ])
 
-  stats.value = {
-    clients: clients.count || 0,
-    modules: modules.count || 0,
-    checkins: checkins.count || 0
+  if (statsRes.data) {
+    stats.value = {
+      clients: Number(statsRes.data.clients) || 0,
+      modules: Number(statsRes.data.modules) || 0,
+      checkins: Number(statsRes.data.checkins) || 0
+    }
   }
-  recentCheckins.value = recent.data || []
+  recentCheckins.value = recentRes.data || []
   loading.value = false
 })
 
@@ -139,7 +136,7 @@ function formatDate(d) {
               <TrendingUp :size="16" :style="`color: ${colors[ci.energy_level]}`" />
             </div>
             <div class="flex-1 min-w-0">
-              <p class="text-sm font-semibold text-white">{{ ci.client?.full_name || 'Client' }}</p>
+              <p class="text-sm font-semibold text-white">{{ ci.client_name || 'Client' }}</p>
               <p class="text-xs text-gray-500">
                 Energie: <span :style="`color: ${colors[ci.energy_level]}`">{{ labels[ci.energy_level] }}</span>
                 · Somn: <span :style="`color: ${colors[ci.sleep_quality]}`">{{ labels[ci.sleep_quality] }}</span>
