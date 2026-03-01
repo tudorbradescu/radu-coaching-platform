@@ -9,6 +9,7 @@ const routes = [
   { path: '/admin', name: 'admin', component: () => import('@/views/admin/AdminDashboard.vue'), meta: { admin: true } },
   { path: '/admin/clienti', name: 'admin-clienti', component: () => import('@/views/admin/AdminClients.vue'), meta: { admin: true } },
   { path: '/admin/module', name: 'admin-module', component: () => import('@/views/admin/AdminModules.vue'), meta: { admin: true } },
+  { path: '/admin/checkins', name: 'admin-checkins', component: () => import('@/views/admin/AdminCheckins.vue'), meta: { admin: true } },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 

@@ -103,6 +103,20 @@ function formatDate(d) {
           </div>
           <ChevronRight :size="16" class="text-gray-600 group-hover:text-orange-400 transition-colors" />
         </button>
+
+        <button @click="router.push('/admin/checkins')"
+          class="group flex items-center justify-between p-5 bg-[#111] border border-white/5 rounded-xl hover:border-green-500/30 transition-all text-left">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center">
+              <ClipboardList :size="18" class="text-green-400" />
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-white">Vezi check-in-uri</p>
+              <p class="text-xs text-gray-500">Rapoarte săptămânale ale clienților</p>
+            </div>
+          </div>
+          <ChevronRight :size="16" class="text-gray-600 group-hover:text-green-400 transition-colors" />
+        </button>
       </div>
 
       <!-- Recent check-ins -->
