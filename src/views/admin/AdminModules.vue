@@ -81,7 +81,7 @@ async function deleteVideo(moduleId, videoId) {
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-4xl mx-auto px-5 pt-4 pb-8">
+    <main class="max-w-4xl mx-auto px-5 pt-4 pb-24 sm:pb-8">
 
       <button @click="router.push('/admin')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-6">
         <ArrowLeft :size="16" /> Înapoi la Admin

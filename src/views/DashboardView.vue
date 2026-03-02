@@ -56,7 +56,7 @@ const needsCheckin = computed(() => !lastCheckin.value || daysSinceCheckin() >= 
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-2xl mx-auto px-5 pt-4 pb-8">
+    <main class="max-w-2xl mx-auto px-5 pt-4 pb-24 sm:pb-8">
 
       <!-- Header -->
       <div class="mb-8">

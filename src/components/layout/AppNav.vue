@@ -15,8 +15,6 @@ async function logout() {
 <template>
   <!-- Top spacer -->
   <div class="h-14"></div>
-  <!-- Bottom spacer for mobile tab bar -->
-  <div class="h-16 sm:h-0"></div>
 
   <!-- Top nav -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/98 backdrop-blur-md border-b border-white/5">
