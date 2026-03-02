@@ -12,11 +12,8 @@ const moduleVideos = ref({})
 const loading = ref(true)
 const saving = ref(false)
 
-// New module form
 const newModule = ref({ title: '', description: '' })
 const showNewModule = ref(false)
-
-// New video form per module
 const newVideo = ref({})
 
 onMounted(async () => {
@@ -84,41 +81,41 @@ async function deleteVideo(moduleId, videoId) {
   <div class="min-h-screen bg-[#0a0a0a]">
     <AppNav />
 
-    <main class="max-w-4xl mx-auto px-4 pt-6 pb-16">
+    <main class="max-w-4xl mx-auto px-5 pt-4 pb-8">
 
-      <button @click="router.push('/admin')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-8 group">
-        <ArrowLeft :size="16" class="group-hover:-translate-x-1 transition-transform" /> Înapoi la Admin
+      <button @click="router.push('/admin')" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-6">
+        <ArrowLeft :size="16" /> Înapoi la Admin
       </button>
 
-      <div class="flex items-center justify-between mb-8">
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.3em] text-red-500 mb-2">Conținut</p>
-          <h1 class="text-4xl font-['Bebas_Neue'] tracking-wide text-white">Module & Videouri</h1>
-        </div>
+      <!-- Header -->
+      <div class="mb-8">
+        <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Conținut</p>
+        <h1 class="text-5xl font-['Bebas_Neue'] tracking-wide text-white mb-5">Module & Videouri</h1>
         <button
           @click="showNewModule = !showNewModule"
-          class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition-all"
+          class="flex items-center justify-center gap-2 w-full sm:w-auto sm:px-6 py-4 rounded-2xl text-base font-bold text-white transition-all active:scale-[0.98]"
           style="background: linear-gradient(135deg, #ef4444, #f97316);"
         >
-          <Plus :size="16" /> Modul nou
+          <Plus :size="20" /> + Modul nou
         </button>
       </div>
 
       <!-- New module form -->
-      <div v-if="showNewModule" class="mb-6 bg-[#111] border border-red-500/20 rounded-xl p-5">
-        <p class="text-xs font-semibold uppercase tracking-widest text-red-400 mb-4">Modul nou</p>
+      <div v-if="showNewModule" class="mb-6 bg-[#111] border border-red-500/20 rounded-2xl p-5">
+        <p class="text-sm font-bold uppercase tracking-widest text-red-400 mb-4">Modul nou</p>
         <div class="space-y-3">
           <input v-model="newModule.title" type="text" placeholder="Titlu modul (ex: Mindset)"
-            class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
+            class="w-full px-4 py-4 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-base outline-none focus:border-red-500/50 transition-all" />
           <input v-model="newModule.description" type="text" placeholder="Descriere scurtă (opțional)"
-            class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
-          <div class="flex gap-2">
+            class="w-full px-4 py-4 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-base outline-none focus:border-red-500/50 transition-all" />
+          <div class="flex gap-3">
             <button @click="addModule" :disabled="saving"
-              class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white"
+              class="flex-1 flex items-center justify-center gap-2 py-4 rounded-xl text-base font-bold text-white active:scale-[0.98] transition-all"
               style="background: linear-gradient(135deg, #ef4444, #f97316);">
-              <Save :size="14" /> Salvează
+              <Save :size="18" /> Salvează
             </button>
-            <button @click="showNewModule = false" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-gray-400 bg-white/5 hover:bg-white/10 transition-colors">
+            <button @click="showNewModule = false"
+              class="flex-1 py-4 rounded-xl text-base font-bold text-gray-400 bg-white/5 hover:bg-white/10 transition-colors">
               Anulează
             </button>
           </div>
@@ -126,70 +123,70 @@ async function deleteVideo(moduleId, videoId) {
       </div>
 
       <!-- Modules list -->
-      <div v-if="loading" class="space-y-2">
-        <div v-for="i in 3" :key="i" class="h-16 bg-[#111] rounded-xl animate-pulse"></div>
+      <div v-if="loading" class="space-y-3">
+        <div v-for="i in 3" :key="i" class="h-20 bg-[#111] rounded-2xl animate-pulse"></div>
       </div>
 
-      <div v-else class="space-y-2">
-        <div v-if="modules.length === 0" class="text-center py-12 text-gray-500 text-sm">
-          Niciun modul creat. Apasă „Modul nou" pentru a începe.
+      <div v-else class="space-y-3">
+        <div v-if="modules.length === 0" class="text-center py-16 text-gray-500">
+          <p class="text-base mb-1">Niciun modul creat.</p>
+          <p class="text-sm">Apasă „+ Modul nou" pentru a începe.</p>
         </div>
 
         <div v-for="mod in modules" :key="mod.id"
-             class="rounded-xl border overflow-hidden"
+             class="rounded-2xl border overflow-hidden"
              :class="expandedModule === mod.id ? 'border-red-500/30 bg-[#111]' : 'border-white/5 bg-[#0d0d0d]'">
 
           <!-- Module header -->
           <div class="flex items-center gap-3 p-4">
-            <button class="flex-1 flex items-center gap-3 text-left" @click="toggleModule(mod)">
-              <div class="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 text-xs font-bold"
+            <button class="flex-1 flex items-center gap-4 text-left" @click="toggleModule(mod)">
+              <div class="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-base font-bold"
                    :class="expandedModule === mod.id ? 'bg-red-500 text-white' : 'bg-[#1a1a1a] text-gray-500'">
                 {{ mod.order_index }}
               </div>
-              <div>
-                <p class="text-sm font-semibold text-white">{{ mod.title }}</p>
-                <p class="text-xs text-gray-500">{{ mod.description || 'Fără descriere' }}</p>
+              <div class="flex-1 min-w-0">
+                <p class="text-base font-bold text-white">{{ mod.title }}</p>
+                <p class="text-sm text-gray-500 truncate">{{ mod.description || 'Fără descriere' }}</p>
               </div>
             </button>
-            <button class="flex-1 flex justify-end" @click="toggleModule(mod)">
-              <ChevronDown v-if="expandedModule !== mod.id" :size="16" class="text-gray-600" />
-              <ChevronUp v-else :size="16" class="text-red-400" />
+            <button @click="toggleModule(mod)" class="p-2">
+              <ChevronDown v-if="expandedModule !== mod.id" :size="20" class="text-gray-600" />
+              <ChevronUp v-else :size="20" class="text-red-400" />
             </button>
-            <button @click="deleteModule(mod.id)" class="p-2 rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors">
-              <Trash2 :size="14" />
+            <button @click="deleteModule(mod.id)" class="p-2 rounded-xl text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors">
+              <Trash2 :size="18" />
             </button>
           </div>
 
           <!-- Videos -->
-          <div v-if="expandedModule === mod.id" class="px-4 pb-4 space-y-2">
-            <p class="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">Videouri</p>
+          <div v-if="expandedModule === mod.id" class="px-4 pb-5 space-y-3">
+            <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Videouri</p>
 
-            <!-- Existing videos -->
             <div v-for="video in moduleVideos[mod.id]" :key="video.id"
-                 class="flex items-center gap-3 p-3 bg-[#1a1a1a] rounded-xl border border-white/5">
-              <Video :size="14" class="text-red-400 flex-shrink-0" />
+                 class="flex items-center gap-3 p-4 bg-[#1a1a1a] rounded-xl border border-white/5">
+              <Video :size="18" class="text-red-400 flex-shrink-0" />
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-white truncate">{{ video.title }}</p>
+                <p class="text-sm font-bold text-white truncate">{{ video.title }}</p>
                 <p class="text-xs text-gray-500">Vimeo ID: {{ video.vimeo_id }}</p>
               </div>
-              <button @click="deleteVideo(mod.id, video.id)" class="p-1.5 rounded-lg text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors">
-                <Trash2 :size="12" />
+              <button @click="deleteVideo(mod.id, video.id)" class="p-2 rounded-xl text-gray-600 hover:text-red-400 hover:bg-red-500/10 transition-colors">
+                <Trash2 :size="16" />
               </button>
             </div>
 
             <!-- Add video form -->
-            <div class="p-3 bg-[#141414] rounded-xl border border-dashed border-white/10 space-y-2">
-              <p class="text-xs text-gray-500 font-semibold uppercase tracking-widest">+ Videoclip nou</p>
+            <div class="p-4 bg-[#141414] rounded-xl border border-dashed border-white/10 space-y-3">
+              <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">+ Videoclip nou</p>
               <input v-model="newVideo[mod.id].title" type="text" placeholder="Titlu videoclip"
-                class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
+                class="w-full px-4 py-3.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-base outline-none focus:border-red-500/50 transition-all" />
               <input v-model="newVideo[mod.id].vimeo_id" type="text" placeholder="Vimeo ID (ex: 123456789 sau 123456789/hashPrivat)"
-                class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
+                class="w-full px-4 py-3.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-base outline-none focus:border-red-500/50 transition-all" />
               <input v-model="newVideo[mod.id].description" type="text" placeholder="Descriere (opțional)"
-                class="w-full px-3 py-2.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-sm outline-none focus:border-red-500/50 transition-all" />
+                class="w-full px-4 py-3.5 rounded-xl bg-[#1a1a1a] border border-white/8 text-white placeholder-gray-600 text-base outline-none focus:border-red-500/50 transition-all" />
               <button @click="addVideo(mod.id)"
-                class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white"
+                class="w-full flex items-center justify-center gap-2 py-4 rounded-xl text-base font-bold text-white active:scale-[0.98] transition-all"
                 style="background: linear-gradient(135deg, #ef4444, #f97316);">
-                <Plus :size="12" /> Adaugă videoclip
+                <Plus :size="18" /> Adaugă videoclip
               </button>
             </div>
           </div>
