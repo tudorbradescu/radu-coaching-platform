@@ -13,49 +13,96 @@ async function logout() {
 </script>
 
 <template>
-  <!-- Spacer care ține locul navului fix în document flow -->
-  <div class="h-16"></div>
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/95 backdrop-blur-md border-b border-white/5">
-    <div class="max-w-5xl mx-auto px-4 pr-4 h-16 flex items-center justify-between">
+  <!-- Top spacer -->
+  <div class="h-14"></div>
+  <!-- Bottom spacer for mobile tab bar -->
+  <div class="h-16 sm:h-0"></div>
+
+  <!-- Top nav -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/98 backdrop-blur-md border-b border-white/5">
+    <div class="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+
       <!-- Logo -->
-      <RouterLink to="/" class="font-['Bebas_Neue'] text-lg sm:text-xl tracking-widest text-white hover:text-red-400 transition-colors shrink-0">
+      <RouterLink to="/" class="font-['Bebas_Neue'] text-xl tracking-widest text-white shrink-0">
         RADU <span class="text-red-500">MOCUȚA</span>
       </RouterLink>
 
-      <!-- Nav links -->
-      <div class="flex items-center gap-1">
+      <!-- Desktop nav links -->
+      <div class="hidden sm:flex items-center gap-1">
         <RouterLink
           v-if="auth.isAdmin"
           to="/admin"
-          class="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors min-w-[44px] justify-center"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors"
           :class="$route.path.startsWith('/admin') ? 'text-red-400 bg-red-500/10' : 'text-gray-400 hover:text-white hover:bg-white/5'"
         >
-          <Settings :size="18" /> <span class="hidden sm:inline">Admin</span>
+          <Settings :size="16" /> Admin
         </RouterLink>
         <RouterLink
           v-else
           to="/"
-          class="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors min-w-[44px] justify-center"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors"
           :class="$route.path === '/' ? 'text-red-400 bg-red-500/10' : 'text-gray-400 hover:text-white hover:bg-white/5'"
         >
-          <LayoutDashboard :size="18" /> <span class="hidden sm:inline">Dashboard</span>
+          <LayoutDashboard :size="16" /> Dashboard
         </RouterLink>
         <RouterLink
+          v-if="!auth.isAdmin"
           to="/checkin"
-          class="flex items-center gap-1.5 px-3 py-2.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors min-w-[44px] justify-center"
+          class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold uppercase tracking-wider transition-colors"
           :class="$route.path === '/checkin' ? 'text-red-400 bg-red-500/10' : 'text-gray-400 hover:text-white hover:bg-white/5'"
         >
-          <ClipboardList :size="18" /> <span class="hidden sm:inline">Check-in</span>
+          <ClipboardList :size="16" /> Check-in
         </RouterLink>
 
-        <!-- User + logout -->
-        <div class="flex items-center gap-1 ml-1 pl-2 border-l border-white/10">
-          <span class="text-xs text-gray-500 hidden md:block mr-1">{{ auth.profile?.full_name || auth.user?.email }}</span>
-          <button @click="logout" class="p-2.5 rounded-lg text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors min-w-[44px] flex items-center justify-center" title="Ieși din cont">
-            <LogOut :size="20" />
+        <div class="ml-2 pl-2 border-l border-white/10 flex items-center gap-2">
+          <span class="text-xs text-gray-500 hidden md:block">{{ auth.profile?.full_name || auth.user?.email }}</span>
+          <button @click="logout" class="flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-red-400 hover:bg-red-500/10 transition-colors uppercase tracking-wider">
+            <LogOut :size="16" /> Ieșire
           </button>
         </div>
       </div>
+
+      <!-- Mobile: just logout -->
+      <button @click="logout" class="sm:hidden flex items-center gap-1.5 text-gray-400 hover:text-red-400 transition-colors p-2 rounded-lg">
+        <LogOut :size="20" />
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile bottom tab bar -->
+  <div class="sm:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#0a0a0a]/98 backdrop-blur-md border-t border-white/8">
+    <div class="flex items-center justify-around h-16 px-2 safe-bottom">
+
+      <RouterLink
+        v-if="auth.isAdmin"
+        to="/admin"
+        class="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors"
+        :class="$route.path.startsWith('/admin') ? 'text-red-400' : 'text-gray-500'"
+      >
+        <Settings :size="24" />
+        <span class="text-[10px] font-bold uppercase tracking-wider">Admin</span>
+      </RouterLink>
+
+      <RouterLink
+        v-if="!auth.isAdmin"
+        to="/"
+        class="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors"
+        :class="$route.path === '/' ? 'text-red-400' : 'text-gray-500'"
+      >
+        <LayoutDashboard :size="24" />
+        <span class="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
+      </RouterLink>
+
+      <RouterLink
+        v-if="!auth.isAdmin"
+        to="/checkin"
+        class="flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors"
+        :class="$route.path === '/checkin' ? 'text-red-400' : 'text-gray-500'"
+      >
+        <ClipboardList :size="24" />
+        <span class="text-[10px] font-bold uppercase tracking-wider">Check-in</span>
+      </RouterLink>
+
+    </div>
+  </div>
 </template>
