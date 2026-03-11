@@ -77,7 +77,7 @@ async function deleteVideo(moduleId, videoId) {
 
 <template>
   <AdminLayout>
-    <div class="px-6 lg:px-10 py-8 max-w-[1100px]">
+    <div class="admin-content">
 
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">

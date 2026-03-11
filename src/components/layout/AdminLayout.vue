@@ -119,8 +119,8 @@ async function logout() {
     </Transition>
 
     <!-- Main content -->
-    <main class="flex-1 lg:ml-[260px] min-h-screen">
-      <div class="pt-14 lg:pt-0">
+    <main class="admin-main flex-1 min-h-screen">
+      <div class="admin-inner">
         <slot />
       </div>
     </main>
@@ -130,4 +130,14 @@ async function logout() {
 <style scoped>
 .slide-enter-active, .slide-leave-active { transition: opacity 0.2s ease; }
 .slide-enter-from, .slide-leave-to { opacity: 0; }
+
+.admin-main {
+  padding-top: 3.5rem; /* mobile: offset for fixed header */
+}
+@media (min-width: 1024px) {
+  .admin-main {
+    margin-left: 260px;
+    padding-top: 0;
+  }
+}
 </style>

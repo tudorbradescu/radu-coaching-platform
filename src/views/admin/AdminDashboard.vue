@@ -36,7 +36,7 @@ function formatDate(d) {
 
 <template>
   <AdminLayout>
-    <div class="px-6 lg:px-10 py-8 lg:py-10 max-w-[1100px]">
+    <div class="admin-content">
 
       <!-- Header -->
       <div class="mb-10">

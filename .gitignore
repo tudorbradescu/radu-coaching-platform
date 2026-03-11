@@ -24,3 +24,7 @@ dist-ssr
 *.sw?
 .env
 dist/
+*.png
+*.jpg
+*.jpeg
+.playwright-mcp/
