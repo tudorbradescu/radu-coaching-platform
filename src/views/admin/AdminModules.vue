@@ -107,7 +107,7 @@ async function deleteVideo(moduleId, videoId) {
               class="w-full px-3.5 py-2.5 rounded-lg bg-[#09090b] border border-white/[0.08] text-sm text-white placeholder-zinc-600 outline-none focus:border-red-500/50 transition-all" />
             <div class="flex gap-3">
               <button @click="showNewModule = false"
-                class="flex-1 py-2.5 rounded-lg text-sm font-medium text-zinc-400 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors">
+                class="flex-1 py-2.5 rounded-lg text-sm font-medium text-zinc-400 bg-white/[0.04] hover:bg-white/[0.08] border border-zinc-800 transition-colors">
                 Anuleaza
               </button>
               <button @click="addModule" :disabled="saving"
@@ -120,7 +120,7 @@ async function deleteVideo(moduleId, videoId) {
       </Transition>
 
       <!-- Modules list -->
-      <div class="bg-[#111113] border border-white/[0.06] rounded-xl overflow-hidden">
+      <div class="bg-[#111113] border border-zinc-800 rounded-xl overflow-hidden">
         <div v-if="loading" class="divide-y divide-white/[0.04]">
           <div v-for="i in 3" :key="i" class="h-[72px] animate-pulse bg-white/[0.02]"></div>
         </div>

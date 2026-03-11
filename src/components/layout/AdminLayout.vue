@@ -34,10 +34,10 @@ async function logout() {
   <div class="min-h-screen bg-[#09090b] flex">
 
     <!-- Desktop Sidebar -->
-    <aside class="hidden lg:flex flex-col w-[260px] border-r border-white/[0.06] bg-[#0c0c0e] flex-shrink-0 fixed inset-y-0 left-0 z-40">
+    <aside class="hidden lg:flex flex-col w-[260px] border-r border-zinc-800 bg-[#0c0c0e] flex-shrink-0 fixed inset-y-0 left-0 z-40">
 
       <!-- Logo -->
-      <div class="h-16 flex items-center px-6 border-b border-white/[0.06]">
+      <div class="h-16 flex items-center px-6 border-b border-zinc-800">
         <RouterLink to="/admin" class="flex items-center gap-2.5">
           <div class="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center">
             <span class="text-white font-bold text-sm">R</span>
@@ -47,11 +47,11 @@ async function logout() {
       </div>
 
       <!-- Nav -->
-      <nav class="flex-1 px-3 py-4 space-y-1">
+      <nav class="flex-1 px-4 py-5 space-y-1">
         <RouterLink
           v-for="item in navItems" :key="item.path"
           :to="item.path"
-          class="group flex items-center gap-3 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-all duration-150"
+          class="group flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
           :class="isActive(item)
             ? 'bg-white/[0.08] text-white'
             : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'"
@@ -63,7 +63,7 @@ async function logout() {
       </nav>
 
       <!-- User -->
-      <div class="border-t border-white/[0.06] p-4">
+      <div class="border-t border-zinc-800 p-5">
         <div class="flex items-center gap-3 mb-3">
           <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold">
             {{ (auth.profile?.full_name || 'A')[0].toUpperCase() }}
@@ -74,7 +74,7 @@ async function logout() {
           </div>
         </div>
         <button @click="logout"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-red-400 hover:bg-red-500/[0.08] border border-white/[0.06] transition-all duration-150">
+          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-red-400 hover:bg-red-500/[0.08] border border-zinc-800 transition-all duration-150">
           <LogOut :size="14" />
           Deconectare
         </button>
@@ -82,7 +82,7 @@ async function logout() {
     </aside>
 
     <!-- Mobile Header -->
-    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#0c0c0e]/95 backdrop-blur-xl border-b border-white/[0.06] flex items-center justify-between px-4">
+    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#0c0c0e]/95 backdrop-blur-xl border-b border-zinc-800 flex items-center justify-between px-4">
       <div class="flex items-center gap-2.5">
         <div class="w-7 h-7 rounded-md bg-red-500 flex items-center justify-center">
           <span class="text-white font-bold text-xs">R</span>
@@ -98,7 +98,7 @@ async function logout() {
     <!-- Mobile Menu Overlay -->
     <Transition name="slide">
       <div v-if="mobileOpen" class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" @click="mobileOpen = false">
-        <div class="absolute top-14 left-0 right-0 bg-[#0c0c0e] border-b border-white/[0.06] p-3 space-y-1" @click.stop>
+        <div class="absolute top-14 left-0 right-0 bg-[#0c0c0e] border-b border-zinc-800 p-3 space-y-1" @click.stop>
           <RouterLink
             v-for="item in navItems" :key="item.path"
             :to="item.path"

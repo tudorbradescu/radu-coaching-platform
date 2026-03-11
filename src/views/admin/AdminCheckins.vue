@@ -61,7 +61,7 @@ function toggleExpand(id) {
           <h1 class="text-2xl font-semibold text-white tracking-tight">Check-in-uri</h1>
           <p class="text-sm text-zinc-500 mt-1">Rapoarte saptamanale ale clientilor</p>
         </div>
-        <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-300 bg-white/[0.04] border border-white/[0.06]">
+        <span class="inline-flex items-center px-3 py-1.5 rounded-lg text-sm font-medium text-zinc-300 bg-white/[0.04] border border-zinc-800">
           {{ checkins.length }} total
         </span>
       </div>
@@ -70,18 +70,18 @@ function toggleExpand(id) {
       <div v-if="Object.keys(clients).length > 1" class="mb-6 flex gap-2 flex-wrap">
         <button @click="filterClient = 'all'"
           class="px-3.5 py-2 rounded-lg text-xs font-medium transition-all"
-          :class="filterClient === 'all' ? 'bg-white/[0.1] text-white border border-white/[0.1]' : 'bg-white/[0.03] text-zinc-500 border border-white/[0.06] hover:text-zinc-300'">
+          :class="filterClient === 'all' ? 'bg-white/[0.1] text-white border border-white/[0.1]' : 'bg-white/[0.03] text-zinc-500 border border-zinc-800 hover:text-zinc-300'">
           Toti
         </button>
         <button v-for="(name, id) in clients" :key="id" @click="filterClient = id"
           class="px-3.5 py-2 rounded-lg text-xs font-medium transition-all"
-          :class="filterClient === id ? 'bg-white/[0.1] text-white border border-white/[0.1]' : 'bg-white/[0.03] text-zinc-500 border border-white/[0.06] hover:text-zinc-300'">
+          :class="filterClient === id ? 'bg-white/[0.1] text-white border border-white/[0.1]' : 'bg-white/[0.03] text-zinc-500 border border-zinc-800 hover:text-zinc-300'">
           {{ name }}
         </button>
       </div>
 
       <!-- List -->
-      <div class="bg-[#111113] border border-white/[0.06] rounded-xl overflow-hidden">
+      <div class="bg-[#111113] border border-zinc-800 rounded-xl overflow-hidden">
         <div v-if="loading" class="divide-y divide-white/[0.04]">
           <div v-for="i in 4" :key="i" class="h-[80px] animate-pulse bg-white/[0.02]"></div>
         </div>
@@ -161,15 +161,15 @@ function toggleExpand(id) {
                   <p class="text-xs text-zinc-500 mb-1">Digestie</p>
                   <p class="text-sm font-semibold" :style="`color: ${scoreColors[ci.digestion]}`">{{ scoreLabels[ci.digestion] }}</p>
                 </div>
-                <div v-if="ci.stress_level" class="rounded-lg p-3 bg-white/[0.02] border border-white/[0.06]">
+                <div v-if="ci.stress_level" class="rounded-lg p-3 bg-white/[0.02] border border-zinc-800">
                   <p class="text-xs text-zinc-500 mb-1">Stres</p>
                   <p class="text-sm font-semibold text-white">{{ stressLabels[ci.stress_level] || ci.stress_level }}</p>
                 </div>
-                <div v-if="ci.appetite" class="rounded-lg p-3 bg-white/[0.02] border border-white/[0.06]">
+                <div v-if="ci.appetite" class="rounded-lg p-3 bg-white/[0.02] border border-zinc-800">
                   <p class="text-xs text-zinc-500 mb-1">Apetit</p>
                   <p class="text-sm font-semibold text-white">{{ appetiteLabels[ci.appetite] || ci.appetite }}</p>
                 </div>
-                <div v-if="ci.daily_steps" class="rounded-lg p-3 bg-white/[0.02] border border-white/[0.06]">
+                <div v-if="ci.daily_steps" class="rounded-lg p-3 bg-white/[0.02] border border-zinc-800">
                   <p class="text-xs text-zinc-500 mb-1">Pasi zilnici</p>
                   <p class="text-sm font-semibold text-white">{{ ci.daily_steps }}</p>
                 </div>
@@ -201,19 +201,19 @@ function toggleExpand(id) {
                 <p class="text-sm text-zinc-300 leading-relaxed">{{ ci.next_period_focus }}</p>
               </div>
 
-              <div v-if="ci.group_call_topics" class="rounded-lg p-4 bg-white/[0.02] border border-white/[0.06]">
+              <div v-if="ci.group_call_topics" class="rounded-lg p-4 bg-white/[0.02] border border-zinc-800">
                 <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Subiecte apel grup</p>
                 <p class="text-sm text-zinc-300 leading-relaxed">{{ ci.group_call_topics }}</p>
               </div>
 
-              <div v-if="ci.coach_support" class="rounded-lg p-4 bg-white/[0.02] border border-white/[0.06]">
+              <div v-if="ci.coach_support" class="rounded-lg p-4 bg-white/[0.02] border border-zinc-800">
                 <p class="text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-2">Suport solicitat</p>
                 <p class="text-sm text-zinc-300 leading-relaxed">{{ ci.coach_support }}</p>
               </div>
 
               <div v-if="ci.checkin_format" class="flex items-center gap-3 text-sm pt-1">
                 <span class="text-zinc-500 text-xs uppercase tracking-wider">Format preferat:</span>
-                <span class="text-sm font-medium text-white px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/[0.06]">
+                <span class="text-sm font-medium text-white px-2.5 py-1 rounded-md bg-white/[0.04] border border-zinc-800">
                   {{ formatLabels[ci.checkin_format] || ci.checkin_format }}
                 </span>
               </div>

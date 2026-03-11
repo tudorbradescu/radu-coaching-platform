@@ -127,11 +127,11 @@ function copyCredentials() {
           </button>
         </div>
         <div class="space-y-2 mb-4">
-          <div class="flex items-center gap-3 bg-[#09090b] border border-white/[0.06] rounded-lg px-4 py-3">
+          <div class="flex items-center gap-3 bg-[#09090b] border border-zinc-800 rounded-lg px-4 py-3">
             <span class="text-xs text-zinc-500 w-14 shrink-0">Email</span>
             <span class="text-sm text-white font-mono flex-1 break-all">{{ createdClient.email }}</span>
           </div>
-          <div class="flex items-center gap-3 bg-[#09090b] border border-white/[0.06] rounded-lg px-4 py-3">
+          <div class="flex items-center gap-3 bg-[#09090b] border border-zinc-800 rounded-lg px-4 py-3">
             <span class="text-xs text-zinc-500 w-14 shrink-0">Parola</span>
             <span class="text-sm font-mono flex-1" :class="showPassword ? 'text-white' : 'text-zinc-600 tracking-widest'">
               {{ showPassword ? createdClient.password : '••••••••••' }}
@@ -144,7 +144,7 @@ function copyCredentials() {
         </div>
         <button @click="copyCredentials"
           class="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all"
-          :class="copied ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' : 'bg-white/[0.04] text-zinc-300 border border-white/[0.06] hover:bg-white/[0.08]'">
+          :class="copied ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' : 'bg-white/[0.04] text-zinc-300 border border-zinc-800 hover:bg-white/[0.08]'">
           <Copy :size="14" />
           {{ copied ? 'Copiat!' : 'Copiaza credentialele' }}
         </button>
@@ -152,7 +152,7 @@ function copyCredentials() {
       </div>
 
       <!-- Client list -->
-      <div class="bg-[#111113] border border-white/[0.06] rounded-xl overflow-hidden">
+      <div class="bg-[#111113] border border-zinc-800 rounded-xl overflow-hidden">
         <div v-if="loading" class="divide-y divide-white/[0.04]">
           <div v-for="i in 3" :key="i" class="h-[72px] animate-pulse bg-white/[0.02]"></div>
         </div>
@@ -192,7 +192,7 @@ function copyCredentials() {
                   class="flex items-center gap-3 px-4 py-3 rounded-lg border transition-all text-left"
                   :class="(clientModules[client.id] || []).includes(mod.id)
                     ? 'border-red-500/30 bg-red-500/[0.06]'
-                    : 'border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04]'"
+                    : 'border-zinc-800 bg-white/[0.02] hover:bg-white/[0.04]'"
                   :disabled="saving === `${client.id}-${mod.id}`"
                   @click="toggleModule(client.id, mod.id)">
                   <div class="w-6 h-6 rounded-md flex items-center justify-center flex-shrink-0"
@@ -241,7 +241,7 @@ function copyCredentials() {
             </div>
             <div class="flex gap-3 pt-2">
               <button @click="showModal = false"
-                class="flex-1 py-2.5 rounded-lg text-sm font-medium text-zinc-400 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.06] transition-colors">
+                class="flex-1 py-2.5 rounded-lg text-sm font-medium text-zinc-400 bg-white/[0.04] hover:bg-white/[0.08] border border-zinc-800 transition-colors">
                 Anuleaza
               </button>
               <button @click="addClient" :disabled="adding"
