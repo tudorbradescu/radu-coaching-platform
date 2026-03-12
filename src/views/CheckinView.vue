@@ -14,30 +14,24 @@ const error = ref('')
 
 const form = ref({
   weight: '',
-  // Antrenament
   training_adherence: null,
   exercise_difficulties: '',
-  // Nutriție
   nutrition_adherence: null,
   nutrition_notes: '',
   alcohol: '',
-  // Bunăstare
   energy_level: null,
   appetite: '',
   sleep_quality: null,
   digestion: '',
   stress_level: '',
   daily_steps: '',
-  // Câștiguri
   wins: '',
-  // Perspectivă
   next_period_focus: '',
   group_call_topics: '',
   checkin_format: '',
   coach_support: '',
 })
 
-// Adherence options (stored as 5/4/3/2/1)
 const adherenceOptions = [
   { label: 'Foarte bun', value: 5 },
   { label: 'Bun', value: 4 },
@@ -46,21 +40,18 @@ const adherenceOptions = [
   { label: 'Foarte slab', value: 1 },
 ]
 
-// Energy (stored as 5/3/1)
 const energyOptions = [
   { label: '⬆️ Crescut', value: 5 },
   { label: '➡️ Moderat', value: 3 },
-  { label: '⬇️ Scăzut', value: 1 },
+  { label: '⬇️ Scazut', value: 1 },
 ]
 
-// Appetite (text)
 const appetiteOptions = [
-  { label: '🍽️ Mare / foame constantă', value: 'mare' },
+  { label: '🍽️ Mare / foame constanta', value: 'mare' },
   { label: '😐 Moderat', value: 'moderat' },
-  { label: '🙅 Scăzut / rar foame', value: 'scazut' },
+  { label: '🙅 Scazut / rar foame', value: 'scazut' },
 ]
 
-// Sleep / Digestion (stored as 5/4/3/2/1)
 const qualityOptions = [
   { label: 'Foarte bun', value: 5 },
   { label: 'Bun', value: 4 },
@@ -69,18 +60,16 @@ const qualityOptions = [
   { label: 'Slab', value: 1 },
 ]
 
-// Stress (text)
 const stressOptions = [
   { label: '🔴 Foarte mare', value: 'foarte_mare' },
   { label: '🟠 Mare', value: 'mare' },
   { label: '🟡 Mediu', value: 'mediu' },
-  { label: '🟢 Scăzut/minimal', value: 'scazut' },
+  { label: '🟢 Scazut/minimal', value: 'scazut' },
 ]
 
-// Check-in format (text)
 const formatOptions = [
   { label: '🎙️ Mesaj vocal', value: 'voice' },
-  { label: '🎥 Înregistrare video', value: 'vimeo' },
+  { label: '🎥 Inregistrare video', value: 'vimeo' },
   { label: '📞 Apel 1-la-1', value: 'call' },
 ]
 
@@ -114,7 +103,7 @@ async function submit() {
     submitted.value = true
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (e) {
-    error.value = 'Eroare la trimitere. Încearcă din nou.'
+    error.value = 'Eroare la trimitere. Incearca din nou.'
   } finally {
     loading.value = false
   }
@@ -122,60 +111,58 @@ async function submit() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0a0a0a]">
+  <div class="page-wrapper">
+    <div class="page-bg"></div>
     <AppNav />
 
-    <main class="max-w-2xl mx-auto px-5 pt-4 pb-28 sm:pb-10">
+    <main class="page-content">
 
       <!-- Success -->
       <div v-if="submitted" class="flex flex-col items-center justify-center py-20 text-center">
-        <div class="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center"
-             style="background: rgba(34,197,94,0.12); border: 2px solid rgba(34,197,94,0.3);">
-          <CheckCircle :size="48" class="text-green-400" />
+        <div class="success-icon">
+          <CheckCircle :size="52" class="text-green-400" />
         </div>
-        <h2 class="text-5xl font-['Bebas_Neue'] tracking-wide text-white mb-3">Check-in trimis!</h2>
-        <p class="text-gray-400 text-base mb-10 max-w-xs">Radu va analiza raportul tău. Continuă tot așa! 💪</p>
-        <button @click="router.push('/')"
-                class="w-full max-w-xs py-4 rounded-2xl text-base font-bold text-white active:scale-[0.98] transition-transform"
-                style="background: linear-gradient(135deg, #ef4444, #f97316)">
-          Înapoi la Dashboard
+        <h2 class="page-title mt-6 mb-3">Check-in trimis!</h2>
+        <p class="text-zinc-400 text-base mb-10 max-w-sm">Radu va analiza raportul tau. Continua tot asa! 💪</p>
+        <button @click="router.push('/')" class="submit-btn" style="max-width: 320px;">
+          Inapoi la Dashboard
         </button>
       </div>
 
       <!-- Form -->
       <form v-else @submit.prevent="submit" class="space-y-5">
 
-        <button type="button" @click="router.back()" class="flex items-center gap-2 text-sm text-gray-500 hover:text-white transition-colors mb-2">
-          <ArrowLeft :size="16" /> Înapoi
+        <button type="button" @click="router.back()" class="flex items-center gap-2 text-sm text-zinc-500 hover:text-white transition-colors mb-2">
+          <ArrowLeft :size="16" /> Inapoi
         </button>
 
         <div>
-          <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Raport săptămânal</p>
-          <h1 class="text-5xl font-['Bebas_Neue'] tracking-wide text-white mb-1">Check-in</h1>
-          <p class="text-sm text-gray-500">Completează toate secțiunile cu sinceritate.</p>
+          <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Raport saptamanal</p>
+          <h1 class="page-title">Check-in</h1>
+          <p class="text-sm text-zinc-500 mt-2">Completeaza toate sectiunile cu sinceritate.</p>
         </div>
 
-        <!-- ── GREUTATE ── -->
+        <!-- GREUTATE -->
         <section class="card">
-          <p class="section-label">📊 Date de bază</p>
+          <p class="section-label">📊 Date de baza</p>
           <label class="field-label">Greutate (kg)</label>
           <input v-model="form.weight" type="number" step="0.1" inputmode="decimal"
             placeholder="ex: 75.5" class="field-input" />
         </section>
 
-        <!-- ── CEL MAI MARE CÂȘTIG ── -->
+        <!-- CEL MAI MARE CASTIG -->
         <section class="card">
-          <p class="section-label">🏆 Câștigul săptămânii</p>
-          <label class="field-label">Care a fost cea mai mare victorie / satisfacție din săptămâna trecută?</label>
+          <p class="section-label">🏆 Castigul saptamanii</p>
+          <label class="field-label">Care a fost cea mai mare victorie / satisfactie din saptamana trecuta?</label>
           <textarea v-model="form.wins" rows="3" placeholder="Descrie victoria ta..." class="field-input resize-none"></textarea>
         </section>
 
-        <!-- ── ANTRENAMENT ── -->
+        <!-- ANTRENAMENT -->
         <section class="card space-y-5">
           <p class="section-label">💪 Antrenament</p>
 
           <div>
-            <label class="field-label">Aderența la planul de antrenament această săptămână?</label>
+            <label class="field-label">Aderenta la planul de antrenament aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in adherenceOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -190,18 +177,18 @@ async function submit() {
           </div>
 
           <div>
-            <label class="field-label">Dificultăți întâmpinate la exerciții?</label>
+            <label class="field-label">Dificultati intampinate la exercitii?</label>
             <textarea v-model="form.exercise_difficulties" rows="3"
-              placeholder="Ex: durere la genunchi, oboseală excesivă..." class="field-input resize-none"></textarea>
+              placeholder="Ex: durere la genunchi, oboseala excesiva..." class="field-input resize-none"></textarea>
           </div>
         </section>
 
-        <!-- ── NUTRIȚIE ── -->
+        <!-- NUTRITIE -->
         <section class="card space-y-5">
-          <p class="section-label">🥗 Nutriție</p>
+          <p class="section-label">🥗 Nutritie</p>
 
           <div>
-            <label class="field-label">Aderența la planul de nutriție această săptămână?</label>
+            <label class="field-label">Aderenta la planul de nutritie aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in adherenceOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -216,25 +203,25 @@ async function submit() {
           </div>
 
           <div>
-            <label class="field-label">Ce a mers bine cu nutriția? Ce nu? Ce poate fi îmbunătățit?</label>
+            <label class="field-label">Ce a mers bine cu nutritia? Ce nu? Ce poate fi imbunatatit?</label>
             <textarea v-model="form.nutrition_notes" rows="3"
-              placeholder="Fii specific — mese, porții, momente ale zilei..." class="field-input resize-none"></textarea>
+              placeholder="Fii specific — mese, portii, momente ale zilei..." class="field-input resize-none"></textarea>
           </div>
 
           <div>
-            <label class="field-label">Ai consumat alcool această săptămână? Dacă da, ce și cât?</label>
+            <label class="field-label">Ai consumat alcool aceasta saptamana? Daca da, ce si cat?</label>
             <textarea v-model="form.alcohol" rows="2"
-              placeholder="Ex: 2 beri vineri seară, sau Nu" class="field-input resize-none"></textarea>
+              placeholder="Ex: 2 beri vineri seara, sau Nu" class="field-input resize-none"></textarea>
           </div>
         </section>
 
-        <!-- ── BUNĂSTARE ── -->
+        <!-- BUNASTARE -->
         <section class="card space-y-5">
-          <p class="section-label">⚡ Bunăstare</p>
+          <p class="section-label">⚡ Bunastare</p>
 
           <!-- Energy -->
           <div>
-            <label class="field-label">Nivel de energie această săptămână?</label>
+            <label class="field-label">Nivel de energie aceasta saptamana?</label>
             <div class="options-grid-h">
               <button v-for="opt in energyOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -248,7 +235,7 @@ async function submit() {
 
           <!-- Appetite -->
           <div>
-            <label class="field-label">Nivel de apetit această săptămână?</label>
+            <label class="field-label">Nivel de apetit aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in appetiteOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -262,7 +249,7 @@ async function submit() {
 
           <!-- Sleep -->
           <div>
-            <label class="field-label">Calitatea somnului această săptămână?</label>
+            <label class="field-label">Calitatea somnului aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in qualityOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -278,7 +265,7 @@ async function submit() {
 
           <!-- Digestion -->
           <div>
-            <label class="field-label">Calitatea digestiei această săptămână?</label>
+            <label class="field-label">Calitatea digestiei aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in qualityOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -294,7 +281,7 @@ async function submit() {
 
           <!-- Stress -->
           <div>
-            <label class="field-label">Nivel de stres zilnic această săptămână?</label>
+            <label class="field-label">Nivel de stres zilnic aceasta saptamana?</label>
             <div class="options-grid-v">
               <button v-for="opt in stressOptions" :key="opt.value" type="button"
                 class="option-btn"
@@ -308,26 +295,26 @@ async function submit() {
 
           <!-- Steps -->
           <div>
-            <label class="field-label">Realizarea obiectivului de pași zilnici?</label>
+            <label class="field-label">Realizarea obiectivului de pasi zilnici?</label>
             <input v-model="form.daily_steps" type="text"
-              placeholder="Ex: 8.000 pași / zi, sau 70% din obiectiv" class="field-input" />
+              placeholder="Ex: 8.000 pasi / zi, sau 70% din obiectiv" class="field-input" />
           </div>
         </section>
 
-        <!-- ── PERSPECTIVĂ ── -->
+        <!-- PERSPECTIVA -->
         <section class="card space-y-5">
-          <p class="section-label">🎯 Perspectivă & Planificare</p>
+          <p class="section-label">🎯 Perspectiva & Planificare</p>
 
           <div>
-            <label class="field-label">Principalul focus pentru perioada următoare cu 2-3 acțiuni concrete?</label>
+            <label class="field-label">Principalul focus pentru perioada urmatoare cu 2-3 actiuni concrete?</label>
             <textarea v-model="form.next_period_focus" rows="3"
-              placeholder="Ex: 1. Mese pregătite duminică  2. Antrenament luni, joi, sâmbătă  3..." class="field-input resize-none"></textarea>
+              placeholder="Ex: 1. Mese pregatite duminica  2. Antrenament luni, joi, sambata  3..." class="field-input resize-none"></textarea>
           </div>
 
           <div>
             <label class="field-label">Subiecte de discutat la apelurile de grup?</label>
             <textarea v-model="form.group_call_topics" rows="2"
-              placeholder="Orice întrebări sau teme pe care vrei să le abordăm..." class="field-input resize-none"></textarea>
+              placeholder="Orice intrebari sau teme pe care vrei sa le abordam..." class="field-input resize-none"></textarea>
           </div>
 
           <div>
@@ -351,14 +338,12 @@ async function submit() {
         </section>
 
         <!-- Error -->
-        <div v-if="error" class="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-2xl px-4 py-4">
+        <div v-if="error" class="text-sm text-red-400 bg-red-500/[0.08] border border-red-500/20 rounded-2xl px-4 py-4">
           ⚠ {{ error }}
         </div>
 
         <!-- Submit -->
-        <button type="submit" :disabled="loading"
-          class="w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-white text-base tracking-wide transition-all disabled:opacity-50 active:scale-[0.98]"
-          style="background: linear-gradient(135deg, #ef4444, #f97316);">
+        <button type="submit" :disabled="loading" class="submit-btn">
           <Send :size="18" />
           {{ loading ? 'Se trimite...' : 'Trimite Check-in' }}
         </button>
@@ -369,11 +354,73 @@ async function submit() {
 </template>
 
 <style scoped>
+.page-wrapper {
+  min-height: 100vh;
+  background: #0a0a0f;
+  position: relative;
+}
+
+.page-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% -5%, rgba(239, 68, 68, 0.08), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 50%, rgba(249, 115, 22, 0.05), transparent 50%),
+    radial-gradient(ellipse 50% 50% at 10% 90%, rgba(139, 92, 246, 0.04), transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 8rem;
+}
+
+@media (min-width: 640px) {
+  .page-content {
+    padding: 2.5rem 2rem 4rem;
+  }
+}
+
+.page-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem;
+  letter-spacing: 0.05em;
+  color: white;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .page-title {
+    font-size: 4.5rem;
+  }
+}
+
+.success-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.1);
+  border: 2px solid rgba(34, 197, 94, 0.25);
+}
+
 .card {
-  background: #111;
-  border: 1px solid rgba(255,255,255,0.05);
+  background: rgba(17, 17, 19, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
-  padding: 20px;
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .card {
+    padding: 1.75rem;
+  }
 }
 
 .section-label {
@@ -398,37 +445,35 @@ async function submit() {
   width: 100%;
   padding: 14px 16px;
   border-radius: 14px;
-  background: #1a1a1a;
-  border: 1.5px solid rgba(255,255,255,0.08);
+  background: rgba(9, 9, 11, 0.6);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
   color: white;
   font-size: 16px;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   -webkit-appearance: none;
 }
 
 .field-input::placeholder {
-  color: rgba(156,163,175,0.45);
+  color: rgba(156, 163, 175, 0.4);
 }
 
 .field-input:focus {
-  border-color: rgba(239,68,68,0.45);
-  box-shadow: 0 0 0 3px rgba(239,68,68,0.06);
+  border-color: rgba(239, 68, 68, 0.4);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.08);
 }
 
 .field-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+  -webkit-box-shadow: 0 0 0 1000px #111113 inset !important;
   -webkit-text-fill-color: white !important;
 }
 
-/* Vertical option list */
 .options-grid-v {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Horizontal option list (3 items) */
 .options-grid-h {
   display: flex;
   gap: 8px;
@@ -448,16 +493,51 @@ async function submit() {
 }
 
 .option-btn-idle {
-  background: #1a1a1a;
-  border-color: rgba(255,255,255,0.08);
-  color: rgba(156,163,175,1);
+  background: rgba(26, 26, 26, 0.8);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: rgba(156, 163, 175, 1);
 }
 
-.option-btn-idle:active {
-  background: #222;
+.option-btn-idle:hover {
+  background: rgba(34, 34, 34, 0.8);
 }
 
 .option-btn-active {
   font-weight: 700;
+}
+
+.submit-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-radius: 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.25);
+}
+
+.submit-btn:hover {
+  box-shadow: 0 6px 28px rgba(239, 68, 68, 0.35);
+  transform: translateY(-1px);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 </style>
