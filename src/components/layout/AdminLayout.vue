@@ -38,44 +38,42 @@ async function logout() {
 
       <!-- Logo -->
       <div class="sidebar-logo">
-        <RouterLink to="/admin" class="flex items-center gap-2.5">
+        <RouterLink to="/admin" class="flex items-center gap-3">
           <div class="logo-badge">
-            <span class="text-white font-bold text-sm">R</span>
+            <span class="text-white font-bold text-base">R</span>
           </div>
-          <span class="font-semibold text-[15px] text-white tracking-tight">Radu Coaching</span>
+          <span class="font-semibold text-lg text-white tracking-tight">Radu Coaching</span>
         </RouterLink>
       </div>
 
       <!-- Nav -->
-      <nav class="flex-1 px-4 py-5 space-y-1">
+      <nav class="sidebar-nav">
         <RouterLink
           v-for="item in navItems" :key="item.path"
           :to="item.path"
-          class="group flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-all duration-150"
-          :class="isActive(item)
-            ? 'bg-white/[0.08] text-white'
-            : 'text-zinc-400 hover:text-white hover:bg-white/[0.04]'"
+          class="nav-item"
+          :class="isActive(item) ? 'nav-item--active' : 'nav-item--idle'"
         >
-          <component :is="item.icon" :size="18" :class="isActive(item) ? 'text-red-400' : 'text-zinc-500 group-hover:text-zinc-300'" />
+          <component :is="item.icon" :size="22" :class="isActive(item) ? 'text-red-400' : 'text-zinc-500'" />
           {{ item.label }}
-          <ChevronRight v-if="isActive(item)" :size="14" class="ml-auto text-zinc-500" />
+          <ChevronRight v-if="isActive(item)" :size="16" class="ml-auto text-zinc-500" />
         </RouterLink>
       </nav>
 
       <!-- User -->
       <div class="sidebar-user">
-        <div class="flex items-center gap-3 mb-3">
+        <div class="flex items-center gap-3 mb-4">
           <div class="user-avatar">
             {{ (auth.profile?.full_name || 'A')[0].toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-white truncate">{{ auth.profile?.full_name || 'Admin' }}</p>
-            <p class="text-xs text-zinc-500 truncate">{{ auth.user?.email }}</p>
+            <p class="text-base font-medium text-white truncate">{{ auth.profile?.full_name || 'Admin' }}</p>
+            <p class="text-sm text-zinc-500 truncate">{{ auth.user?.email }}</p>
           </div>
         </div>
         <button @click="logout"
-          class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-xs font-medium text-zinc-400 hover:text-red-400 hover:bg-red-500/[0.08] border border-zinc-800 transition-all duration-150">
-          <LogOut :size="14" />
+          class="logout-btn">
+          <LogOut :size="16" />
           Deconectare
         </button>
       </div>
@@ -136,7 +134,7 @@ async function logout() {
 .admin-sidebar {
   display: none;
   flex-direction: column;
-  width: 260px;
+  width: 300px;
   border-right: 1px solid #27272a;
   background: #0c0c0e;
   flex-shrink: 0;
@@ -154,17 +152,17 @@ async function logout() {
 }
 
 .sidebar-logo {
-  height: 64px;
+  height: 80px;
   display: flex;
   align-items: center;
-  padding: 0 1.5rem;
+  padding: 0 1.75rem;
   border-bottom: 1px solid #27272a;
 }
 
 .logo-badge {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   background: #ef4444;
   display: flex;
   align-items: center;
@@ -177,22 +175,77 @@ async function logout() {
   border-radius: 6px;
 }
 
+.sidebar-nav {
+  flex: 1;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.15s;
+}
+
+.nav-item--active {
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+}
+
+.nav-item--idle {
+  color: #a1a1aa;
+}
+
+.nav-item--idle:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.04);
+}
+
 .sidebar-user {
   border-top: 1px solid #27272a;
-  padding: 1.25rem;
+  padding: 1.5rem 1.75rem;
 }
 
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: linear-gradient(135deg, #ef4444, #f97316);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 700;
+}
+
+.logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  border: 1px solid #27272a;
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.logout-btn:hover {
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.08);
 }
 
 /* ── Mobile Header ── */
@@ -254,7 +307,7 @@ async function logout() {
 
 @media (min-width: 1024px) {
   .admin-main {
-    margin-left: 260px;
+    margin-left: 300px;
     padding-top: 0;
   }
 }
