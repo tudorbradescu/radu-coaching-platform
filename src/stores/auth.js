@@ -62,9 +62,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    await supabase.auth.signOut()
     user.value = null
     profile.value = null
+    try { await supabase.auth.signOut() } catch (e) { /* ignore */ }
   }
 
   return { user, profile, loading, isAdmin, isClient, init, login, logout, fetchProfile }

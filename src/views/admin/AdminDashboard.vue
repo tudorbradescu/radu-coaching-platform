@@ -14,18 +14,20 @@ const labels = { 1: 'Slab', 2: 'Acceptabil', 3: 'OK', 4: 'Bine', 5: 'Excelent' }
 const colors = { 1: '#ef4444', 2: '#f97316', 3: '#eab308', 4: '#84cc16', 5: '#22c55e' }
 
 onMounted(async () => {
-  const [statsRes, recentRes] = await Promise.all([
-    supabase.rpc('get_admin_stats'),
-    supabase.rpc('get_recent_checkins', { lim: 5 })
-  ])
-  if (statsRes.data) {
-    stats.value = {
-      clients: Number(statsRes.data.clients) || 0,
-      modules: Number(statsRes.data.modules) || 0,
-      checkins: Number(statsRes.data.checkins) || 0
+  try {
+    const [statsRes, recentRes] = await Promise.all([
+      supabase.rpc('get_admin_stats'),
+      supabase.rpc('get_recent_checkins', { lim: 5 })
+    ])
+    if (statsRes.data) {
+      stats.value = {
+        clients: Number(statsRes.data.clients) || 0,
+        modules: Number(statsRes.data.modules) || 0,
+        checkins: Number(statsRes.data.checkins) || 0
+      }
     }
-  }
-  recentCheckins.value = recentRes.data || []
+    recentCheckins.value = recentRes.data || []
+  } catch (e) { /* Supabase may be unavailable */ }
   loading.value = false
 })
 

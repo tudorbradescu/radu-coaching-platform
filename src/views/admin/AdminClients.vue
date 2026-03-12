@@ -22,7 +22,8 @@ const showPassword = ref(false)
 const copied = ref(false)
 
 onMounted(async () => {
-  await loadClients()
+  try { await loadClients() } catch (e) { /* ignore */ }
+  loading.value = false
 })
 
 async function loadClients() {
@@ -32,7 +33,6 @@ async function loadClients() {
   ])
   clients.value = cl.data || []
   allModules.value = md.data || []
-  loading.value = false
 }
 
 async function toggleClient(client) {

@@ -15,7 +15,7 @@ const showNewModule = ref(false)
 const newVideo = ref({})
 
 onMounted(async () => {
-  await fetchModules()
+  try { await fetchModules() } catch (e) { /* ignore */ }
   loading.value = false
 })
 

@@ -19,8 +19,10 @@ const stressLabels = { foarte_mare: 'Foarte mare', mare: 'Mare', mediu: 'Mediu',
 const formatLabels = { voice: 'Mesaj vocal', vimeo: 'Inregistrare video', call: 'Apel 1-la-1' }
 
 onMounted(async () => {
-  const { data } = await supabase.rpc('get_all_checkins')
-  checkins.value = data || []
+  try {
+    const { data } = await supabase.rpc('get_all_checkins')
+    checkins.value = data || []
+  } catch (e) { /* ignore */ }
   loading.value = false
 })
 

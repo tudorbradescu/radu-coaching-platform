@@ -31,15 +31,15 @@ async function logout() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#09090b] flex">
+  <div class="admin-root">
 
     <!-- Desktop Sidebar -->
-    <aside class="hidden lg:flex flex-col w-[260px] border-r border-zinc-800 bg-[#0c0c0e] flex-shrink-0 fixed inset-y-0 left-0 z-40">
+    <aside class="admin-sidebar">
 
       <!-- Logo -->
-      <div class="h-16 flex items-center px-6 border-b border-zinc-800">
+      <div class="sidebar-logo">
         <RouterLink to="/admin" class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center">
+          <div class="logo-badge">
             <span class="text-white font-bold text-sm">R</span>
           </div>
           <span class="font-semibold text-[15px] text-white tracking-tight">Radu Coaching</span>
@@ -63,9 +63,9 @@ async function logout() {
       </nav>
 
       <!-- User -->
-      <div class="border-t border-zinc-800 p-5">
+      <div class="sidebar-user">
         <div class="flex items-center gap-3 mb-3">
-          <div class="w-9 h-9 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center text-white text-xs font-bold">
+          <div class="user-avatar">
             {{ (auth.profile?.full_name || 'A')[0].toUpperCase() }}
           </div>
           <div class="flex-1 min-w-0">
@@ -82,9 +82,9 @@ async function logout() {
     </aside>
 
     <!-- Mobile Header -->
-    <div class="lg:hidden fixed top-0 left-0 right-0 z-50 h-14 bg-[#0c0c0e]/95 backdrop-blur-xl border-b border-zinc-800 flex items-center justify-between px-4">
+    <div class="mobile-header">
       <div class="flex items-center gap-2.5">
-        <div class="w-7 h-7 rounded-md bg-red-500 flex items-center justify-center">
+        <div class="logo-badge logo-badge--sm">
           <span class="text-white font-bold text-xs">R</span>
         </div>
         <span class="font-semibold text-sm text-white">Radu Coaching</span>
@@ -97,8 +97,8 @@ async function logout() {
 
     <!-- Mobile Menu Overlay -->
     <Transition name="slide">
-      <div v-if="mobileOpen" class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" @click="mobileOpen = false">
-        <div class="absolute top-14 left-0 right-0 bg-[#0c0c0e] border-b border-zinc-800 p-3 space-y-1" @click.stop>
+      <div v-if="mobileOpen" class="mobile-overlay" @click="mobileOpen = false">
+        <div class="mobile-menu" @click.stop>
           <RouterLink
             v-for="item in navItems" :key="item.path"
             :to="item.path"
@@ -119,25 +119,147 @@ async function logout() {
     </Transition>
 
     <!-- Main content -->
-    <main class="admin-main flex-1 min-h-screen">
-      <div class="admin-inner">
-        <slot />
-      </div>
+    <main class="admin-main">
+      <slot />
     </main>
   </div>
 </template>
 
 <style scoped>
-.slide-enter-active, .slide-leave-active { transition: opacity 0.2s ease; }
-.slide-enter-from, .slide-leave-to { opacity: 0; }
-
-.admin-main {
-  padding-top: 3.5rem; /* mobile: offset for fixed header */
+.admin-root {
+  min-height: 100vh;
+  background: #09090b;
+  display: flex;
 }
+
+/* ── Desktop Sidebar ── */
+.admin-sidebar {
+  display: none;
+  flex-direction: column;
+  width: 260px;
+  border-right: 1px solid #27272a;
+  background: #0c0c0e;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+}
+
+@media (min-width: 1024px) {
+  .admin-sidebar {
+    display: flex;
+  }
+}
+
+.sidebar-logo {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  border-bottom: 1px solid #27272a;
+}
+
+.logo-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-badge--sm {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+}
+
+.sidebar-user {
+  border-top: 1px solid #27272a;
+  padding: 1.25rem;
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ── Mobile Header ── */
+.mobile-header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 56px;
+  background: rgba(12, 12, 14, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid #27272a;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+@media (min-width: 1024px) {
+  .mobile-header {
+    display: none;
+  }
+}
+
+/* ── Mobile Overlay ── */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+@media (min-width: 1024px) {
+  .mobile-overlay {
+    display: none !important;
+  }
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  right: 0;
+  background: #0c0c0e;
+  border-bottom: 1px solid #27272a;
+  padding: 0.75rem;
+}
+
+/* ── Main Content ── */
+.admin-main {
+  flex: 1;
+  min-height: 100vh;
+  padding-top: 3.5rem;
+}
+
 @media (min-width: 1024px) {
   .admin-main {
     margin-left: 260px;
     padding-top: 0;
   }
 }
+
+/* ── Transitions ── */
+.slide-enter-active, .slide-leave-active { transition: opacity 0.2s ease; }
+.slide-enter-from, .slide-leave-to { opacity: 0; }
 </style>
