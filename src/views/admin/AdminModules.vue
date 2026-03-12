@@ -47,11 +47,14 @@ async function deleteModule(id) {
 
 async function toggleModule(mod) {
   if (expandedModule.value === mod.id) { expandedModule.value = null; return }
-  expandedModule.value = mod.id
   if (!moduleVideos.value[mod.id]) {
+    moduleVideos.value[mod.id] = []
+    newVideo.value[mod.id] = { title: '', vimeo_id: '', description: '' }
+    expandedModule.value = mod.id
     const { data } = await supabase.from('videos').select('*').eq('module_id', mod.id).order('order_index')
     moduleVideos.value[mod.id] = data || []
-    newVideo.value[mod.id] = { title: '', vimeo_id: '', description: '' }
+  } else {
+    expandedModule.value = mod.id
   }
 }
 
