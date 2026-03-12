@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useRouter } from 'vue-router'
-import { ArrowRight, Lock } from 'lucide-vue-next'
+import { ArrowRight, Lock, Flame } from 'lucide-vue-next'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -29,34 +29,40 @@ async function handleLogin() {
 <template>
   <div class="login-page">
 
-    <!-- Subtle background pattern -->
+    <!-- Animated gradient background -->
     <div class="login-bg"></div>
+    <div class="login-glow login-glow--1"></div>
+    <div class="login-glow login-glow--2"></div>
+    <div class="login-glow login-glow--3"></div>
+
+    <!-- Noise overlay for texture -->
+    <div class="login-noise"></div>
 
     <!-- Centered content -->
     <div class="login-container">
 
-      <!-- Logo -->
+      <!-- Logo & branding -->
       <div class="text-center mb-10">
-        <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-red-500 mb-5">
-          <span class="text-white font-bold text-xl">R</span>
+        <div class="login-logo">
+          <Flame :size="28" class="text-white" />
         </div>
-        <h1 class="text-2xl font-semibold text-white tracking-tight">Radu Coaching</h1>
-        <p class="text-sm text-zinc-500 mt-1.5">Platforma ta de coaching fitness</p>
+        <h1 class="login-title">RADU COACHING</h1>
+        <p class="login-subtitle">Transforma-ti corpul. Transforma-ti viata.</p>
       </div>
 
       <!-- Form card -->
       <div class="login-card">
 
         <div class="text-center mb-8">
-          <h2 class="text-lg font-semibold text-white">Bun venit!</h2>
-          <p class="text-sm text-zinc-500 mt-1">Intra in contul tau pentru a continua.</p>
+          <h2 class="text-xl font-semibold text-white">Bun venit!</h2>
+          <p class="text-sm text-zinc-400 mt-1.5">Intra in contul tau pentru a continua.</p>
         </div>
 
-        <form @submit.prevent="handleLogin" class="space-y-4">
+        <form @submit.prevent="handleLogin" class="space-y-5">
 
           <!-- Email -->
           <div>
-            <label class="block text-sm font-medium text-zinc-400 mb-1.5">Email</label>
+            <label class="login-label">Email</label>
             <input
               v-model="email"
               type="email"
@@ -69,7 +75,7 @@ async function handleLogin() {
 
           <!-- Password -->
           <div>
-            <label class="block text-sm font-medium text-zinc-400 mb-1.5">Parola</label>
+            <label class="login-label">Parola</label>
             <input
               v-model="password"
               type="password"
@@ -81,7 +87,7 @@ async function handleLogin() {
           </div>
 
           <!-- Error -->
-          <div v-if="error" class="text-sm text-red-400 bg-red-500/[0.06] border border-red-500/15 rounded-lg px-4 py-3">
+          <div v-if="error" class="text-sm text-red-400 bg-red-500/[0.08] border border-red-500/20 rounded-xl px-4 py-3">
             {{ error }}
           </div>
 
@@ -91,16 +97,16 @@ async function handleLogin() {
             :disabled="loading"
             class="login-button"
           >
-            <Lock v-if="!loading" :size="16" />
-            {{ loading ? 'Se conecteaza...' : 'Intra in cont' }}
-            <ArrowRight v-if="!loading" :size="16" />
+            <Lock v-if="!loading" :size="18" />
+            <span class="text-base">{{ loading ? 'Se conecteaza...' : 'Intra in cont' }}</span>
+            <ArrowRight v-if="!loading" :size="18" />
           </button>
 
         </form>
       </div>
 
       <!-- Footer -->
-      <p class="text-xs text-zinc-600 text-center mt-8">Probleme cu accesul? Contacteaza-l pe Radu pe WhatsApp.</p>
+      <p class="text-xs text-zinc-500 text-center mt-8">Probleme cu accesul? Contacteaza-l pe Radu pe WhatsApp.</p>
 
     </div>
   </div>
@@ -112,49 +118,152 @@ async function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #09090b;
+  background: #0a0a0f;
   padding: 1.5rem;
   position: relative;
   overflow: hidden;
 }
 
+/* Main gradient background — warm red/orange to deep purple */
 .login-bg {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 600px 400px at 50% 0%, rgba(239, 68, 68, 0.06), transparent),
-    radial-gradient(ellipse 400px 300px at 50% 100%, rgba(249, 115, 22, 0.04), transparent);
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(239, 68, 68, 0.25), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(249, 115, 22, 0.15), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 20% 80%, rgba(139, 92, 246, 0.12), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 60% 100%, rgba(236, 72, 153, 0.10), transparent 50%);
+  pointer-events: none;
+}
+
+/* Floating glow orbs for depth */
+.login-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.login-glow--1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(239, 68, 68, 0.15);
+  top: -15%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: float1 8s ease-in-out infinite;
+}
+
+.login-glow--2 {
+  width: 350px;
+  height: 350px;
+  background: rgba(249, 115, 22, 0.12);
+  bottom: -10%;
+  right: -5%;
+  animation: float2 10s ease-in-out infinite;
+}
+
+.login-glow--3 {
+  width: 300px;
+  height: 300px;
+  background: rgba(139, 92, 246, 0.10);
+  bottom: 10%;
+  left: -8%;
+  animation: float3 12s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(20px); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-15px) translateX(-10px); }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(15px); }
+}
+
+/* Subtle noise texture */
+.login-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   pointer-events: none;
 }
 
 .login-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 480px;
   position: relative;
   z-index: 1;
 }
 
+/* Logo */
+.login-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  margin-bottom: 1.25rem;
+  box-shadow: 0 8px 32px rgba(239, 68, 68, 0.3);
+}
+
+.login-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.15em;
+  color: white;
+  line-height: 1;
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  color: #a1a1aa;
+  margin-top: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Card */
 .login-card {
-  background: #111113;
-  border: 1px solid #27272a;
-  border-radius: 16px;
-  padding: 2rem;
+  background: rgba(17, 17, 19, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2.5rem;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.02),
-    0 4px 24px rgba(0, 0, 0, 0.4),
-    0 1px 3px rgba(0, 0, 0, 0.3);
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.login-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #a1a1aa;
+  margin-bottom: 0.5rem;
 }
 
 .login-input {
   width: 100%;
-  padding: 0.625rem 0.875rem;
-  border-radius: 8px;
-  background: #09090b;
-  border: 1px solid #27272a;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  background: rgba(9, 9, 11, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: white;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   -webkit-appearance: none;
 }
 
@@ -164,7 +273,7 @@ async function handleLogin() {
 
 .login-input:focus {
   border-color: #ef4444;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15), 0 0 20px rgba(239, 68, 68, 0.05);
 }
 
 .login-input:-webkit-autofill,
@@ -182,29 +291,33 @@ async function handleLogin() {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.625rem 1rem;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
+  gap: 0.625rem;
+  padding: 0.85rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 600;
   color: white;
-  background: #ef4444;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
   border: none;
   cursor: pointer;
-  transition: background-color 0.15s, transform 0.1s;
-  margin-top: 0.5rem;
+  transition: all 0.2s;
+  margin-top: 0.75rem;
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);
 }
 
 .login-button:hover {
-  background: #dc2626;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.35);
+  transform: translateY(-1px);
 }
 
 .login-button:active {
-  transform: scale(0.98);
+  transform: translateY(0) scale(0.99);
 }
 
 .login-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 </style>
