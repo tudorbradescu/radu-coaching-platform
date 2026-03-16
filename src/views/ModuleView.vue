@@ -52,7 +52,11 @@ function toggleVideo(id) {
 }
 
 function vimeoEmbed(vimeoId) {
-  const [id, hash] = vimeoId.toString().split('/')
+  let raw = vimeoId.toString().trim()
+  // Handle full URLs: https://vimeo.com/123/hash?params
+  const urlMatch = raw.match(/vimeo\.com\/(\d+(?:\/[a-zA-Z0-9]+)?)/)
+  if (urlMatch) raw = urlMatch[1]
+  const [id, hash] = raw.split('/')
   const hashParam = hash ? `&h=${hash}` : ''
   return `https://player.vimeo.com/video/${id}?badge=0&autopause=0&player_id=0&app_id=58479${hashParam}`
 }
