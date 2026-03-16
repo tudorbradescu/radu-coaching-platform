@@ -58,18 +58,38 @@ async function toggleModule(mod) {
   }
 }
 
+function parseVimeoId(input) {
+  if (!input) return input
+  const s = input.trim()
+  // Full URL: https://vimeo.com/1173928278/5b462498c8?fl=pl&fe=sh
+  const urlMatch = s.match(/vimeo\.com\/(\d+(?:\/[a-zA-Z0-9]+)?)/)
+  if (urlMatch) return urlMatch[1]
+  // Already an ID like 1173928278 or 1173928278/hash
+  return s
+}
+
 async function addVideo(moduleId) {
   const v = newVideo.value[moduleId]
-  if (!v.title.trim() || !v.vimeo_id.trim()) return
-  const { data } = await supabase.from('videos').insert({
-    module_id: moduleId,
-    title: v.title,
-    vimeo_id: v.vimeo_id,
-    description: v.description,
-    order_index: (moduleVideos.value[moduleId]?.length || 0) + 1
-  }).select().single()
-  if (data) moduleVideos.value[moduleId].push(data)
-  newVideo.value[moduleId] = { title: '', vimeo_id: '', description: '' }
+  if (!v || !v.title.trim() || !v.vimeo_id.trim()) return
+  if (saving.value) return
+  saving.value = true
+  try {
+    const vimeoId = parseVimeoId(v.vimeo_id)
+    const { data, error } = await supabase.from('videos').insert({
+      module_id: moduleId,
+      title: v.title,
+      vimeo_id: vimeoId,
+      description: v.description,
+      order_index: (moduleVideos.value[moduleId]?.length || 0) + 1
+    }).select().single()
+    if (error) { alert('Eroare: ' + error.message); return }
+    if (data) moduleVideos.value[moduleId] = [...moduleVideos.value[moduleId], data]
+    newVideo.value[moduleId] = { title: '', vimeo_id: '', description: '' }
+  } catch (e) {
+    alert('Eroare la salvare: ' + e.message)
+  } finally {
+    saving.value = false
+  }
 }
 
 async function deleteVideo(moduleId, videoId) {
