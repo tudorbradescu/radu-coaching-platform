@@ -166,7 +166,7 @@ function isTomorrow(dateStr) {
                   target="_blank"
                   rel="noopener"
                   class="join-btn"
-                  :class="filter === 'past' ? 'opacity-40 pointer-events-none' : ''"
+                  :class="filter === 'past' ? 'opacity-50' : ''"
                 >
                   <ExternalLink :size="14" />
                   Intra in sesiune
