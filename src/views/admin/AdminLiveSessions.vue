@@ -8,6 +8,7 @@ const sessions = ref([])
 const loading = ref(true)
 const showForm = ref(false)
 const saving = ref(false)
+const saveError = ref('')
 
 const form = ref({
   title: '',
@@ -32,6 +33,7 @@ async function fetchSessions() {
 async function createSession() {
   if (!form.value.title || !form.value.meet_link || !form.value.scheduled_at) return
   saving.value = true
+  saveError.value = ''
 
   const { error } = await supabase.from('live_sessions').insert({
     title: form.value.title,
@@ -44,6 +46,9 @@ async function createSession() {
     form.value = { title: '', description: '', meet_link: '', scheduled_at: '' }
     showForm.value = false
     await fetchSessions()
+  } else {
+    saveError.value = error.message
+    console.error('Save error:', error)
   }
   saving.value = false
 }
@@ -103,13 +108,14 @@ function isPast(dateStr) {
             <input v-model="form.scheduled_at" type="datetime-local" class="admin-input" />
           </div>
         </div>
-        <div class="flex gap-3 mt-5">
+        <div class="flex items-center gap-3 mt-5 flex-wrap">
           <button @click="createSession" :disabled="saving" class="px-5 py-2.5 rounded-xl bg-green-500 text-white font-bold text-sm hover:bg-green-600 transition-all disabled:opacity-40">
             {{ saving ? 'Se salveaza...' : 'Creeaza sesiune' }}
           </button>
           <button @click="showForm = false" class="px-5 py-2.5 rounded-xl bg-white/5 text-zinc-400 font-semibold text-sm hover:bg-white/10 transition-all">
             Anuleaza
           </button>
+          <p v-if="saveError" class="text-sm text-red-400">{{ saveError }}</p>
         </div>
       </div>
 
