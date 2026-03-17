@@ -103,7 +103,8 @@ async function submit() {
     submitted.value = true
     window.scrollTo({ top: 0, behavior: 'smooth' })
   } catch (e) {
-    error.value = 'Eroare la trimitere. Incearca din nou.'
+    error.value = e?.message || 'Eroare la trimitere. Incearca din nou.'
+    console.error('Checkin error:', e)
   } finally {
     loading.value = false
   }
