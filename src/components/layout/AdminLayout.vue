@@ -2,7 +2,7 @@
 import { useAuthStore } from '@/stores/auth.js'
 import { useRouter, useRoute } from 'vue-router'
 import {
-  LayoutDashboard, Users, BookOpen, ClipboardList, Video,
+  LayoutDashboard, Users, BookOpen, ClipboardList, Video, MessageSquare,
   LogOut, ChevronRight, Menu, X
 } from 'lucide-vue-next'
 import { ref } from 'vue'
@@ -14,6 +14,7 @@ const mobileOpen = ref(false)
 
 const navItems = [
   { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
+  { path: '/feed', label: 'Feed', icon: MessageSquare },
   { path: '/admin/clienti', label: 'Clienti', icon: Users },
   { path: '/admin/module', label: 'Module', icon: BookOpen },
   { path: '/admin/checkins', label: 'Check-in-uri', icon: ClipboardList },
