@@ -415,6 +415,7 @@ async function submit() {
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 20px;
   padding: 1.5rem;
+  isolation: isolate;
 }
 
 @media (min-width: 640px) {
@@ -485,11 +486,13 @@ async function submit() {
   font-size: 14px;
   font-weight: 600;
   text-align: left;
-  transition: all 0.15s;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
   border: 1.5px solid transparent;
   cursor: pointer;
   flex: 1;
   -webkit-tap-highlight-color: transparent;
+  position: relative;
+  z-index: 0;
 }
 
 .option-btn-idle {
