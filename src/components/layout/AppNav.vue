@@ -1,7 +1,7 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth.js'
 import { useRouter } from 'vue-router'
-import { LogOut, LayoutDashboard, ClipboardList, Settings, Flame } from 'lucide-vue-next'
+import { LogOut, Home, BookOpen, MessageSquare, Video, ClipboardList, Settings, Flame } from 'lucide-vue-next'
 
 const auth = useAuthStore()
 const router = useRouter()
@@ -38,22 +38,24 @@ async function logout() {
         >
           <Settings :size="16" /> Admin
         </RouterLink>
-        <RouterLink
-          v-else
-          to="/"
-          class="nav-link"
-          :class="$route.path === '/' ? 'nav-link-active' : 'nav-link-idle'"
-        >
-          <LayoutDashboard :size="16" /> Dashboard
-        </RouterLink>
-        <RouterLink
-          v-if="!auth.isAdmin"
-          to="/checkin"
-          class="nav-link"
-          :class="$route.path === '/checkin' ? 'nav-link-active' : 'nav-link-idle'"
-        >
-          <ClipboardList :size="16" /> Check-in
-        </RouterLink>
+
+        <template v-if="!auth.isAdmin">
+          <RouterLink to="/" class="nav-link" :class="$route.path === '/' ? 'nav-link-active' : 'nav-link-idle'">
+            <Home :size="16" /> Acasa
+          </RouterLink>
+          <RouterLink to="/feed" class="nav-link" :class="$route.path === '/feed' ? 'nav-link-active' : 'nav-link-idle'">
+            <MessageSquare :size="16" /> Feed
+          </RouterLink>
+          <RouterLink to="/live" class="nav-link" :class="$route.path === '/live' ? 'nav-link-active' : 'nav-link-idle'">
+            <Video :size="16" /> Live
+          </RouterLink>
+          <RouterLink to="/dashboard" class="nav-link" :class="$route.path === '/dashboard' || $route.path.startsWith('/modul') ? 'nav-link-active' : 'nav-link-idle'">
+            <BookOpen :size="16" /> Module
+          </RouterLink>
+          <RouterLink to="/checkin" class="nav-link" :class="$route.path === '/checkin' ? 'nav-link-active' : 'nav-link-idle'">
+            <ClipboardList :size="16" /> Check-in
+          </RouterLink>
+        </template>
 
         <div class="ml-3 pl-3 border-l border-white/10 flex items-center gap-3">
           <span class="text-sm text-zinc-400 hidden md:block">{{ auth.profile?.full_name || auth.user?.email }}</span>
@@ -84,25 +86,32 @@ async function logout() {
         <span class="text-[10px] font-bold uppercase tracking-wider">Admin</span>
       </RouterLink>
 
-      <RouterLink
-        v-if="!auth.isAdmin"
-        to="/"
-        class="mobile-tab"
-        :class="$route.path === '/' ? 'text-red-400' : 'text-zinc-500'"
-      >
-        <LayoutDashboard :size="22" />
-        <span class="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
-      </RouterLink>
+      <template v-if="!auth.isAdmin">
+        <RouterLink to="/" class="mobile-tab" :class="$route.path === '/' ? 'text-red-400' : 'text-zinc-500'">
+          <Home :size="22" />
+          <span class="text-[10px] font-bold uppercase tracking-wider">Acasa</span>
+        </RouterLink>
 
-      <RouterLink
-        v-if="!auth.isAdmin"
-        to="/checkin"
-        class="mobile-tab"
-        :class="$route.path === '/checkin' ? 'text-red-400' : 'text-zinc-500'"
-      >
-        <ClipboardList :size="22" />
-        <span class="text-[10px] font-bold uppercase tracking-wider">Check-in</span>
-      </RouterLink>
+        <RouterLink to="/feed" class="mobile-tab" :class="$route.path === '/feed' ? 'text-red-400' : 'text-zinc-500'">
+          <MessageSquare :size="22" />
+          <span class="text-[10px] font-bold uppercase tracking-wider">Feed</span>
+        </RouterLink>
+
+        <RouterLink to="/live" class="mobile-tab" :class="$route.path === '/live' ? 'text-red-400' : 'text-zinc-500'">
+          <Video :size="22" />
+          <span class="text-[10px] font-bold uppercase tracking-wider">Live</span>
+        </RouterLink>
+
+        <RouterLink to="/dashboard" class="mobile-tab" :class="$route.path === '/dashboard' || $route.path.startsWith('/modul') ? 'text-red-400' : 'text-zinc-500'">
+          <BookOpen :size="22" />
+          <span class="text-[10px] font-bold uppercase tracking-wider">Module</span>
+        </RouterLink>
+
+        <RouterLink to="/checkin" class="mobile-tab" :class="$route.path === '/checkin' ? 'text-red-400' : 'text-zinc-500'">
+          <ClipboardList :size="22" />
+          <span class="text-[10px] font-bold uppercase tracking-wider">Check-in</span>
+        </RouterLink>
+      </template>
 
     </div>
   </div>

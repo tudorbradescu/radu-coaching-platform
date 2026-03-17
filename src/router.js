@@ -3,13 +3,17 @@ import { useAuthStore } from '@/stores/auth.js'
 
 const routes = [
   { path: '/login', name: 'login', component: () => import('@/views/LoginView.vue'), meta: { public: true } },
-  { path: '/', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
+  { path: '/', name: 'welcome', component: () => import('@/views/WelcomeView.vue') },
+  { path: '/dashboard', name: 'dashboard', component: () => import('@/views/DashboardView.vue') },
+  { path: '/feed', name: 'feed', component: () => import('@/views/FeedView.vue') },
+  { path: '/live', name: 'live', component: () => import('@/views/LiveView.vue') },
   { path: '/modul/:id', name: 'modul', component: () => import('@/views/ModuleView.vue') },
   { path: '/checkin', name: 'checkin', component: () => import('@/views/CheckinView.vue') },
   { path: '/admin', name: 'admin', component: () => import('@/views/admin/AdminDashboard.vue'), meta: { admin: true } },
   { path: '/admin/clienti', name: 'admin-clienti', component: () => import('@/views/admin/AdminClients.vue'), meta: { admin: true } },
   { path: '/admin/module', name: 'admin-module', component: () => import('@/views/admin/AdminModules.vue'), meta: { admin: true } },
   { path: '/admin/checkins', name: 'admin-checkins', component: () => import('@/views/admin/AdminCheckins.vue'), meta: { admin: true } },
+  { path: '/admin/live', name: 'admin-live', component: () => import('@/views/admin/AdminLiveSessions.vue'), meta: { admin: true } },
   { path: '/:pathMatch(.*)*', redirect: '/' }
 ]
 
@@ -23,9 +27,9 @@ router.beforeEach(async (to) => {
   if (auth.loading) await new Promise(r => setTimeout(r, 100))
 
   if (!to.meta.public && !auth.user) return { name: 'login' }
-  if (to.meta.admin && !auth.isAdmin) return { name: 'dashboard' }
+  if (to.meta.admin && !auth.isAdmin) return { name: 'welcome' }
   if (to.name === 'login' && auth.user) {
-    return auth.isAdmin ? { name: 'admin' } : { name: 'dashboard' }
+    return auth.isAdmin ? { name: 'admin' } : { name: 'welcome' }
   }
 })
 

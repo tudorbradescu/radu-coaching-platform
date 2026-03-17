@@ -2,7 +2,7 @@
 import { useAuthStore } from '@/stores/auth.js'
 import { useRouter, useRoute } from 'vue-router'
 import {
-  LayoutDashboard, Users, BookOpen, ClipboardList,
+  LayoutDashboard, Users, BookOpen, ClipboardList, Video,
   LogOut, ChevronRight, Menu, X
 } from 'lucide-vue-next'
 import { ref } from 'vue'
@@ -17,6 +17,7 @@ const navItems = [
   { path: '/admin/clienti', label: 'Clienti', icon: Users },
   { path: '/admin/module', label: 'Module', icon: BookOpen },
   { path: '/admin/checkins', label: 'Check-in-uri', icon: ClipboardList },
+  { path: '/admin/live', label: 'Suport LIVE', icon: Video },
 ]
 
 function isActive(item) {

@@ -12,7 +12,9 @@ Radu Coaching Platform — a private online fitness coaching SPA for Radu Mocuț
 - `npm run build` — Production build
 - `npm run preview` — Preview production build locally
 
-No test framework is configured.
+No test framework or linter is configured.
+
+**Local setup:** Copy `.env.example` to `.env` and fill in `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`, then `npm install`.
 
 ## Architecture
 
@@ -54,7 +56,7 @@ Admin views use RPC functions: `get_admin_stats()`, `get_recent_checkins()`, `ge
 ## Conventions
 
 - Import alias: `@/` maps to `src/`
-- UI: Dark theme (#0a0a0a base), red accent (#ef4444), fonts Bebas Neue (headings) + Inter (body)
+- UI: Dark theme (#0a0a0f base), red accent (#ef4444), orange secondary (#f97316), fonts Bebas Neue (headings) + Inter (body)
 - Icons: Lucide Vue Next
 - Styling: Tailwind utility classes + scoped CSS in components. Custom theme colors defined in `src/assets/css/main.css`
 - Responsive: Mobile-first with bottom tab bar on mobile, top nav on desktop (`AppNav.vue`)
