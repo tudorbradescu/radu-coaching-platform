@@ -38,6 +38,14 @@ async function logout() {
         >
           <Settings :size="16" /> Admin
         </RouterLink>
+        <RouterLink
+          v-if="auth.isAdmin"
+          to="/feed"
+          class="nav-link"
+          :class="$route.path === '/feed' ? 'nav-link-active' : 'nav-link-idle'"
+        >
+          <MessageSquare :size="16" /> Feed
+        </RouterLink>
 
         <template v-if="!auth.isAdmin">
           <RouterLink to="/" class="nav-link" :class="$route.path === '/' ? 'nav-link-active' : 'nav-link-idle'">
@@ -84,6 +92,16 @@ async function logout() {
       >
         <Settings :size="22" />
         <span class="text-[10px] font-bold uppercase tracking-wider">Admin</span>
+      </RouterLink>
+
+      <RouterLink
+        v-if="auth.isAdmin"
+        to="/feed"
+        class="mobile-tab"
+        :class="$route.path === '/feed' ? 'text-red-400' : 'text-zinc-500'"
+      >
+        <MessageSquare :size="22" />
+        <span class="text-[10px] font-bold uppercase tracking-wider">Feed</span>
       </RouterLink>
 
       <template v-if="!auth.isAdmin">
