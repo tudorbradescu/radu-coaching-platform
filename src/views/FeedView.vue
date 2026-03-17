@@ -10,6 +10,7 @@ const posts = ref([])
 const newPost = ref('')
 const loading = ref(true)
 const posting = ref(false)
+const postError = ref('')
 const expandedComments = ref(new Set())
 const commentTexts = ref({})
 
@@ -45,12 +46,16 @@ async function fetchPosts() {
 async function createPost() {
   if (!newPost.value.trim() || posting.value) return
   posting.value = true
+  postError.value = ''
   const { error } = await supabase
     .from('posts')
     .insert({ user_id: auth.user.id, content: newPost.value.trim() })
   if (!error) {
     newPost.value = ''
     await fetchPosts()
+  } else {
+    postError.value = error.message
+    console.error('Post error:', error)
   }
   posting.value = false
 }
@@ -171,7 +176,9 @@ function canDelete(post) {
               @keydown.meta.enter="createPost"
               @keydown.ctrl.enter="createPost"
             ></textarea>
-            <div class="flex justify-end mt-3">
+            <div class="flex items-center justify-between mt-3">
+              <p v-if="postError" class="text-xs text-red-400">{{ postError }}</p>
+              <div v-else></div>
               <button
                 @click="createPost"
                 :disabled="!newPost.trim() || posting"
