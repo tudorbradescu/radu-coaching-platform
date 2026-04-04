@@ -2,7 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { supabase } from '@/supabase.js'
 import AdminLayout from '@/components/layout/AdminLayout.vue'
-import { Plus, X, ChevronDown, ChevronUp, Check, Copy, UserPlus, Eye, EyeOff } from 'lucide-vue-next'
+import { Plus, X, ChevronDown, ChevronUp, Check, Copy, UserPlus, Eye, EyeOff, Trash2 } from 'lucide-vue-next'
 
 const clients = ref([])
 const allModules = ref([])
@@ -27,21 +27,23 @@ onMounted(async () => {
 })
 
 async function loadClients() {
-  const [cl, md] = await Promise.all([
+  const [cl, md, cm] = await Promise.all([
     supabase.rpc('get_clients'),
-    supabase.from('modules').select('*').order('order_index')
+    supabase.from('modules').select('*').order('order_index'),
+    supabase.from('client_modules').select('client_id, module_id')
   ])
   clients.value = cl.data || []
   allModules.value = md.data || []
+  const map = {}
+  for (const row of (cm.data || [])) {
+    if (!map[row.client_id]) map[row.client_id] = []
+    map[row.client_id].push(row.module_id)
+  }
+  clientModules.value = map
 }
 
-async function toggleClient(client) {
-  if (expandedClient.value === client.id) { expandedClient.value = null; return }
-  expandedClient.value = client.id
-  if (!clientModules.value[client.id]) {
-    const { data } = await supabase.from('client_modules').select('module_id').eq('client_id', client.id)
-    clientModules.value[client.id] = (data || []).map(r => r.module_id)
-  }
+function toggleClient(client) {
+  expandedClient.value = expandedClient.value === client.id ? null : client.id
 }
 
 async function toggleModule(clientId, moduleId) {
@@ -100,6 +102,24 @@ async function addClient() {
     addError.value = e.message
   } finally {
     adding.value = false
+  }
+}
+
+const deleting = ref(null)
+
+async function deleteClient(client) {
+  if (!confirm(`Stergi clientul "${client.full_name || client.email}"? Aceasta actiune este ireversibila.`)) return
+  deleting.value = client.id
+  try {
+    const { error } = await supabase.rpc('delete_client', { target_id: client.id })
+    if (error) throw new Error(error.message)
+    clients.value = clients.value.filter(c => c.id !== client.id)
+    delete clientModules.value[client.id]
+    if (expandedClient.value === client.id) expandedClient.value = null
+  } catch (e) {
+    alert(e.message)
+  } finally {
+    deleting.value = null
   }
 }
 
@@ -176,22 +196,30 @@ function copyCredentials() {
         <div v-else class="divide-y divide-white/[0.04]">
           <div v-for="client in clients" :key="client.id">
             <!-- Client row -->
-            <button class="w-full flex items-center gap-5 px-7 py-5 text-left hover:bg-white/[0.02] transition-colors" @click="toggleClient(client)">
-              <div class="client-avatar">
-                {{ (client.full_name || 'C')[0].toUpperCase() }}
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-base font-medium text-white">{{ client.full_name || 'Client' }}</p>
-                <p class="text-sm text-zinc-500 truncate">{{ client.email }}</p>
-              </div>
-              <div class="flex items-center gap-4 flex-shrink-0">
-                <span class="text-sm text-zinc-600 hidden sm:block px-3 py-1.5 rounded-md bg-white/[0.04]">
-                  {{ (clientModules[client.id] || []).length }} module
-                </span>
-                <ChevronDown v-if="expandedClient !== client.id" :size="18" class="text-zinc-600" />
-                <ChevronUp v-else :size="18" class="text-zinc-400" />
-              </div>
-            </button>
+            <div class="flex items-center gap-0 px-7 py-5 hover:bg-white/[0.02] transition-colors">
+              <button class="flex-1 flex items-center gap-5 text-left" @click="toggleClient(client)">
+                <div class="client-avatar">
+                  {{ (client.full_name || 'C')[0].toUpperCase() }}
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p class="text-base font-medium text-white">{{ client.full_name || 'Client' }}</p>
+                  <p class="text-sm text-zinc-500 truncate">{{ client.email }}</p>
+                </div>
+                <div class="flex items-center gap-4 flex-shrink-0">
+                  <span class="text-sm text-zinc-600 hidden sm:block px-3 py-1.5 rounded-md bg-white/[0.04]">
+                    {{ (clientModules[client.id] || []).length }} module
+                  </span>
+                  <ChevronDown v-if="expandedClient !== client.id" :size="18" class="text-zinc-600" />
+                  <ChevronUp v-else :size="18" class="text-zinc-400" />
+                </div>
+              </button>
+              <button @click="deleteClient(client)"
+                :disabled="deleting === client.id"
+                class="ml-3 p-2 rounded-md text-zinc-600 hover:text-red-400 hover:bg-red-500/[0.08] transition-colors"
+                :class="{ 'opacity-50 cursor-default': deleting === client.id }">
+                <Trash2 :size="17" />
+              </button>
+            </div>
 
             <!-- Expanded modules -->
             <div v-if="expandedClient === client.id" class="px-7 pb-6 bg-white/[0.01]">
