@@ -73,11 +73,22 @@ async function addClient() {
     const { data: { session } } = await supabase.auth.getSession()
     const token = session?.access_token
     if (!token) throw new Error('Sesiune invalida')
-    const res = await fetch('https://erfcmpccobjwtjutwmba.supabase.co/functions/v1/create-client', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify({ full_name: newName.value.trim(), email: newEmail.value.trim() })
-    })
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), 15000)
+    let res
+    try {
+      res = await fetch('https://erfcmpccobjwtjutwmba.supabase.co/functions/v1/create-client', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ full_name: newName.value.trim(), email: newEmail.value.trim() }),
+        signal: controller.signal
+      })
+    } catch (fetchErr) {
+      if (fetchErr.name === 'AbortError') throw new Error('Cererea a expirat. Verifica conexiunea sau contacteaza suportul.')
+      throw fetchErr
+    } finally {
+      clearTimeout(timeout)
+    }
     const result = await res.json()
     if (!res.ok || result.error) throw new Error(result.error || 'Eroare necunoscuta')
     createdClient.value = { ...result.user, password: result.password }

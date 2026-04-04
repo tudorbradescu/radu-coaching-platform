@@ -12,6 +12,7 @@ const saving = ref(false)
 
 const newModule = ref({ title: '', description: '' })
 const showNewModule = ref(false)
+const moduleError = ref('')
 const newVideo = ref({})
 
 onMounted(async () => {
@@ -27,15 +28,22 @@ async function fetchModules() {
 async function addModule() {
   if (!newModule.value.title.trim()) return
   saving.value = true
-  const { data } = await supabase.from('modules').insert({
-    title: newModule.value.title,
-    description: newModule.value.description,
-    order_index: modules.value.length + 1
-  }).select().single()
-  if (data) modules.value.push(data)
-  newModule.value = { title: '', description: '' }
-  showNewModule.value = false
-  saving.value = false
+  moduleError.value = ''
+  try {
+    const { data, error } = await supabase.from('modules').insert({
+      title: newModule.value.title,
+      description: newModule.value.description,
+      order_index: modules.value.length + 1
+    }).select().single()
+    if (error) throw new Error(error.message)
+    if (data) modules.value.push(data)
+    newModule.value = { title: '', description: '' }
+    showNewModule.value = false
+  } catch (e) {
+    moduleError.value = e.message
+  } finally {
+    saving.value = false
+  }
 }
 
 async function deleteModule(id) {
@@ -68,11 +76,14 @@ function parseVimeoId(input) {
   return s
 }
 
+const videoError = ref('')
+
 async function addVideo(moduleId) {
   const v = newVideo.value[moduleId]
   if (!v || !v.title.trim() || !v.vimeo_id.trim()) return
   if (saving.value) return
   saving.value = true
+  videoError.value = ''
   try {
     const vimeoId = parseVimeoId(v.vimeo_id)
     const { data, error } = await supabase.from('videos').insert({
@@ -82,11 +93,11 @@ async function addVideo(moduleId) {
       description: v.description,
       order_index: (moduleVideos.value[moduleId]?.length || 0) + 1
     }).select().single()
-    if (error) { alert('Eroare: ' + error.message); return }
+    if (error) throw new Error(error.message)
     if (data) moduleVideos.value[moduleId] = [...moduleVideos.value[moduleId], data]
     newVideo.value[moduleId] = { title: '', vimeo_id: '', description: '' }
   } catch (e) {
-    alert('Eroare la salvare: ' + e.message)
+    videoError.value = e.message
   } finally {
     saving.value = false
   }
@@ -128,6 +139,9 @@ async function deleteVideo(moduleId, videoId) {
               class="form-input" />
             <input v-model="newModule.description" type="text" placeholder="Descriere scurta (optional)"
               class="form-input" />
+            <div v-if="moduleError" class="text-base text-red-400 bg-red-500/[0.06] border border-red-500/15 rounded-lg px-5 py-4">
+              {{ moduleError }}
+            </div>
             <div class="flex gap-3 pt-1">
               <button @click="showNewModule = false"
                 class="cancel-btn">
@@ -135,7 +149,7 @@ async function deleteVideo(moduleId, videoId) {
               </button>
               <button @click="addModule" :disabled="saving"
                 class="save-btn">
-                <Save :size="16" /> Salveaza
+                <Save :size="16" /> {{ saving ? 'Se salveaza...' : 'Salveaza' }}
               </button>
             </div>
           </div>
@@ -201,9 +215,12 @@ async function deleteVideo(moduleId, videoId) {
                   class="form-input" />
                 <input v-model="newVideo[mod.id].description" type="text" placeholder="Descriere (optional)"
                   class="form-input" />
-                <button @click="addVideo(mod.id)"
-                  class="w-full flex items-center justify-center gap-2 py-3 rounded-lg text-base font-medium text-white bg-red-500 hover:bg-red-600 transition-colors">
-                  <Plus :size="16" /> Adauga videoclip
+                <div v-if="videoError" class="text-base text-red-400 bg-red-500/[0.06] border border-red-500/15 rounded-lg px-5 py-4">
+                  {{ videoError }}
+                </div>
+                <button @click="addVideo(mod.id)" :disabled="saving"
+                  class="w-full flex items-center justify-center gap-2 py-3 rounded-lg text-base font-medium text-white bg-red-500 hover:bg-red-600 disabled:opacity-50 disabled:cursor-default transition-colors">
+                  <Plus :size="16" /> {{ saving ? 'Se adauga...' : 'Adauga videoclip' }}
                 </button>
               </div>
             </div>
@@ -278,6 +295,7 @@ async function deleteVideo(moduleId, videoId) {
   transition: background 0.15s;
 }
 .save-btn:hover { background: #dc2626; }
+.save-btn:disabled { opacity: 0.5; cursor: default; }
 
 .module-index {
   width: 48px;
