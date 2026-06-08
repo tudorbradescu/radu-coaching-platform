@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy redirect to new home
 
 on:
   push:
@@ -18,18 +18,45 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-      - name: Copy index.html to 404.html for SPA routing
-        run: cp dist/index.html dist/404.html
+      - name: Build static redirect page
+        run: |
+          mkdir -p dist
+          cat > dist/index.html <<'HTML'
+          <!DOCTYPE html>
+          <html lang="ro">
+          <head>
+            <meta charset="utf-8">
+            <title>Radu Coaching — Platforma s-a mutat</title>
+            <meta name="viewport" content="width=device-width,initial-scale=1">
+            <meta http-equiv="refresh" content="0; url=https://radumocutacoachingplatform.github.io/home/">
+            <link rel="canonical" href="https://radumocutacoachingplatform.github.io/home/">
+            <script>
+              (function () {
+                var target = 'https://radumocutacoachingplatform.github.io/home/';
+                var rest = location.pathname.replace(/^\/radu-coaching-platform\/?/, '');
+                if (rest) target += rest;
+                target += location.search + location.hash;
+                location.replace(target);
+              })();
+            </script>
+            <style>
+              body { background:#0a0a0a; color:#fff; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; display:grid; place-items:center; min-height:100vh; margin:0; text-align:center; padding:24px; }
+              a { color:#ef4444; text-decoration:none; font-weight:600; }
+              a:hover { text-decoration:underline; }
+              h1 { margin:0 0 12px; font-size: clamp(24px, 4vw, 36px); }
+              p { margin: 8px 0; color:#bbb; }
+            </style>
+          </head>
+          <body>
+            <div>
+              <h1>Platforma s-a mutat</h1>
+              <p>Noua adresa: <a href="https://radumocutacoachingplatform.github.io/home/">radumocutacoachingplatform.github.io/home</a></p>
+              <p>Te redirectionam automat...</p>
+            </div>
+          </body>
+          </html>
+          HTML
+          cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
